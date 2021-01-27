@@ -6,7 +6,7 @@ import datetime
 from tablib import Dataset
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
-#ready to run
+
 class GetData(Resource):
 
     def post(self):
