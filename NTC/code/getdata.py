@@ -49,6 +49,9 @@ class GetData(Resource):
         database = MySQLdb.connect (host="localhost", user = "root", passwd = "root", db = "ntc")
         cursor = database.cursor()
 
+        query = "TRUNCATE TABLE data"
+        cursor.execute(query)
+
         DataInsertion(rvsi)
         DataInsertion(sp2)
 
