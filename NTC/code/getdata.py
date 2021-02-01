@@ -3,6 +3,7 @@ import pandas as pd
 import xlrd
 import datetime
 
+from rd_data import RdData
 from tablib import Dataset
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
@@ -63,5 +64,7 @@ class GetData(Resource):
         # Close the database connection
         database.close()
 
-        #return jsonify(data.export('json'))
-        return {"message":"success"},201
+        opData = RdData()
+        
+        return opData
+       
