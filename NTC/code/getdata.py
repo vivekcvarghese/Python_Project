@@ -2,6 +2,7 @@ import MySQLdb
 import pandas as pd
 import xlrd
 import datetime
+import json
 
 from rd_data import RdData
 from tablib import Dataset
@@ -37,7 +38,7 @@ class GetData(Resource):
             SLAExpiration = FormatDate(SLAExpiration)
 
             for i in range(len(Order_Number)):
-            
+                
                 query = """INSERT INTO data (Order_Number, State, Task_Name, Task_Status, SLAExpiration) VALUES (%s, %s, %s, %s, %s)"""
                 values = (Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i])
                 cursor.execute(query, values)
@@ -65,6 +66,8 @@ class GetData(Resource):
         database.close()
 
         opData = RdData()
+        opData = json.dumps(opData, indent = 4)   
+        print(opData) 
         
         return opData
        

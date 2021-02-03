@@ -10,7 +10,7 @@ def RdData():
     result = cursor.fetchall()  
 
     tasks = []
-    output = {}
+    output = []
     for row in result:
             tasks.append(row[0])
     
@@ -20,9 +20,13 @@ def RdData():
         result = cursor.fetchall()
 
         state = {}
+        state["Task_Name"] = i
+        total_count = 0
         for row in result:
+                total_count += row[1]
                 state[row[0]] = row[1]
-        output[i] = state
+        state['Grand_total'] = total_count
+        output.append(state)
 
     cursor.close()
 
