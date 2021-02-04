@@ -47,15 +47,17 @@ class GetData(Resource):
 
         rvsi = request.files['rvsi'].read()  # In form data, I used "rvsi" as key.
         sp2 = request.files['sp2'].read()  # In form data, I used "sp2" as key.
-        
+
         database = MySQLdb.connect (host="localhost", user = "root", passwd = "root", db = "ntc")
         cursor = database.cursor()
 
         query = "TRUNCATE TABLE data"
         cursor.execute(query)
-
-        DataInsertion(rvsi)
-        DataInsertion(sp2)
+        try:
+            DataInsertion(rvsi)
+            DataInsertion(sp2)
+        except KeyError:
+            return json.dumps({"error_in_file" : "Invalid file"})
 
         cursor.close()
 
@@ -67,7 +69,6 @@ class GetData(Resource):
 
         opData = RdData()
         opData = json.dumps(opData, indent = 4)   
-        print(opData) 
-        
+
         return opData
        
