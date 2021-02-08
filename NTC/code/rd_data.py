@@ -15,7 +15,7 @@ def RdData():
             tasks.append(row[0])
     
     for i in tasks:
-        query = "SELECT A.State, COUNT(B.State) FROM data A INNER JOIN data B ON(A.id=B.id) WHERE A.Task_Name = '{}' AND A.Task_Status = 'Available' GROUP BY B.State ORDER BY B.State".format(i)
+        query = "SELECT State, COUNT(State) FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' GROUP BY State ORDER BY State".format(i)
         cursor.execute(query)
         result = cursor.fetchall()
 

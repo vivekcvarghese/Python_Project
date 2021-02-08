@@ -56,9 +56,8 @@ class GetData(Resource):
         try:
             DataInsertion(rvsi)
             DataInsertion(sp2)
-        except KeyError:
+        except:
             return json.dumps({"error_in_file" : "Invalid file"})
-
         cursor.close()
 
         # Commit the transaction

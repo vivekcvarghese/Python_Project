@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS'] = True
 api = Api(app)
 CORS(app)
+
 api.add_resource(GetData, '/getfile')
 
 if __name__ == '__main__':
