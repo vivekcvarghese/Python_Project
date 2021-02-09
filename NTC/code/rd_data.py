@@ -11,11 +11,12 @@ def RdData():
 
     tasks = []
     output = []
+    dates = []
     for row in result:
             tasks.append(row[0])
     
     for i in tasks:
-        query = "SELECT State, COUNT(State) FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' GROUP BY State ORDER BY State".format(i)
+        query = "SELECT State, COUNT(State), SLAExpiration FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' GROUP BY State ORDER BY State".format(i)
         cursor.execute(query)
         result = cursor.fetchall()
 
@@ -25,9 +26,19 @@ def RdData():
         for row in result:
                 total_count += row[1]
                 state[row[0]] = row[1]
+                dt1 = row[2].strftime("%Y/%m/%d")
+                if dt1 in dates:
+                        continue
+                else:   
+                        print(type(dt1))
+                        dates.append(dt1)
         state['Grand_total'] = total_count
         output.append(state)
 
+    dt = {}
+    dt["SLAExpiration"]  = dates  
+    output.append(dt)
+    print(output)
     cursor.close()
 
     database.close()
