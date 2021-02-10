@@ -1,7 +1,13 @@
 import MySQLdb
 
-def RdData():
+def RdData(filters = 0):
     
+    if filters != 0:
+
+            sql_list = str(tuple([key for key in filters])).replace(',)', ')')
+            foo = "AND SLAExpiration IN {}".format(sql_list)
+    else:
+            foo = ""
     database = MySQLdb.connect (host="localhost", user = "root", passwd = "root", db = "ntc")
     cursor = database.cursor()
 
@@ -16,7 +22,7 @@ def RdData():
             tasks.append(row[0])
     
     for i in tasks:
-        query = "SELECT State, COUNT(State), SLAExpiration FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' GROUP BY State ORDER BY State".format(i)
+        query = "SELECT State, COUNT(State), SLAExpiration FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' {} GROUP BY State ORDER BY State".format(i,foo)
         cursor.execute(query)
         result = cursor.fetchall()
 
@@ -30,7 +36,6 @@ def RdData():
                 if dt1 in dates:
                         continue
                 else:   
-                        print(type(dt1))
                         dates.append(dt1)
         state['Grand_total'] = total_count
         output.append(state)
@@ -38,7 +43,6 @@ def RdData():
     dt = {}
     dt["SLAExpiration"]  = dates  
     output.append(dt)
-    print(output)
     cursor.close()
 
     database.close()
