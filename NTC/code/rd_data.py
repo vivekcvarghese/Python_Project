@@ -27,7 +27,7 @@ def RdData(filters = []):
     result = cursor.fetchall()    
     for row in result:
         dt1 = row[0].strftime("%Y/%m/%d")
-    dates.append(dt1)
+        dates.append(dt1)
 
     for i in tasks:
         query = "SELECT State, COUNT(State) FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' {} GROUP BY State ORDER BY State".format(i,foo)
