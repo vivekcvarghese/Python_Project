@@ -21,13 +21,13 @@ def RdData(filters = []):
     for row in result:
             tasks.append(row[0])
 
-    if len(filters) == 0:
-        query2 = "SELECT DISTINCT(SLAExpiration) FROM data WHERE Task_Status = 'Available'"
-        cursor.execute(query2)
-        result = cursor.fetchall()
-        for row in result:
-                dt1 = row[0].strftime("%Y/%m/%d")
-                dates.append(dt1)
+    
+    query2 = "SELECT DISTINCT(SLAExpiration) FROM data WHERE Task_Status = 'Available'"
+    cursor.execute(query2)
+    result = cursor.fetchall()    
+    for row in result:
+        dt1 = row[0].strftime("%Y/%m/%d")
+    dates.append(dt1)
 
     for i in tasks:
         query = "SELECT State, COUNT(State) FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' {} GROUP BY State ORDER BY State".format(i,foo)
