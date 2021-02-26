@@ -3,3 +3,45 @@ id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(100) NOT NULL,
 password VARCHAR(100) NOT NULL,
 created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+
+
+
+version: '3.1'
+services:
+
+  db:
+    image: mysql
+    container_name: docker_db_1
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - newmysqlvolume:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  python:
+    image: simonanil/ntc-python-app
+    container_name: python-app-container
+    # volumes: 
+    #   - /Users/Simon/Desktop/python/NTC/Server/Python_Project/NTC/code:/usr/src/app/code
+    ports:
+      - 5000:5000
+
+  
+  angular:
+    image: simonanil/ntc-angular-app
+    container_name: angular-app-container
+    # volumes:
+    #   - /Users/Simon/Desktop/python/NTC/Client/FileUpload:/usr/src/app
+
+    ports:
+      - 4200:4200
+
+volumes:
+  newmysqlvolume:
+    driver: local
