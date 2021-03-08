@@ -1,4 +1,5 @@
 import MySQLdb
+from connection import connect_db
 
 def RdData(filters = []):
     
@@ -8,8 +9,7 @@ def RdData(filters = []):
             foo = "AND SLAExpiration IN {}".format(sql_list)
     else:
             foo = ""
-    database = MySQLdb.connect (host="localhost", user = "root", passwd = "root", db = "ntc")
-    cursor = database.cursor()
+    cursor, database = connect_db()
 
     query1 = "SELECT DISTINCT(Task_Name) FROM data WHERE Task_Status = 'Available' {} ORDER BY Task_Name".format(foo)
     cursor.execute(query1)
