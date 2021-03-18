@@ -1,8 +1,13 @@
 import MySQLdb
+import json
 
 from connection import connect_db
 from flask import request
 from flask_restful import Resource
+from ldap3 import *
+
+
+
 
 class User(Resource):
 
@@ -10,20 +15,23 @@ class User(Resource):
     
         jdata = request.get_json()
         username = jdata['username']
-        password = jdata['password']
+        pswd = jdata['password']
+        AccountName = username.split("\\")[1]
+
+        try:
+            
+            server = Server('ntcbpohyd.com')
+            conn = Connection(server, user=username, password=pswd, auto_bind=True)
+            conn.search('dc=ntcbpohyd,dc=com','(&(objectclass=person)(sAMAccountName ='+AccountName+'))', attributes=['displayName', 'description'])
+            Name = str(conn.entries[0].displayName)
+            description = str(conn.entries[0].description)
+            
+            return {"login":"success", 
+                    "name":Name, 
+                    "description":description}
         
-        cursor, database = connect_db()
-          
-        query = "SELECT * FROM users WHERE username = '{}' AND password = '{}'".format(username,password)
-        cursor.execute(query)
-        result = cursor.fetchone()
+        except:
 
-        cursor.close()
-
-        database.close()
-
-        if result:
-            return {"login":"success"}
-        else:
             return {"login":"invalid credentials"}
+        
 
