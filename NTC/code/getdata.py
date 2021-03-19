@@ -47,7 +47,7 @@ class GetData(Resource):
 
             for i in range(len(Order_Number)):
                 
-                query = """INSERT INTO data (Order_Number, State, Task_Name, Task_Status, SLAExpiration) VALUES (%s, %s, %s, %s, %s)"""
+                query = """INSERT INTO data (Order_Number, State, Task_Name, Task_Status, SLAExpiration, processed) VALUES (%s, %s, %s, %s, %s,false)"""
                 values = (Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i])
                 cursor.execute(query, values)
             
@@ -58,8 +58,8 @@ class GetData(Resource):
 
         cursor, database = connect_db()
 
-        # query = "TRUNCATE TABLE data"
-        # cursor.execute(query)
+        query = "UPDATE data SET processed = true"
+        cursor.execute(query)
         try:
             DataInsertion(rvsi)
             DataInsertion(sp2)

@@ -11,7 +11,7 @@ def RdData(filters = []):
             foo = ""
     cursor, database = connect_db()
 
-    query1 = "SELECT DISTINCT(Task_Name) FROM data WHERE Task_Status = 'Available' AND created_date IN (SELECT max(created_date) FROM data WHERE DATE(created_date) = CURDATE()) {} ORDER BY Task_Name".format(foo)
+    query1 = "SELECT DISTINCT(Task_Name) FROM data WHERE Task_Status = 'Available' AND DATE(created_date) = CURDATE() AND processed = false {} ORDER BY Task_Name".format(foo)
     cursor.execute(query1)
     result = cursor.fetchall()  
 
@@ -22,21 +22,15 @@ def RdData(filters = []):
             tasks.append(row[0])
 
     
-    query2 = "SELECT DISTINCT(SLAExpiration) FROM data WHERE Task_Status = 'Available' AND created_date IN (SELECT max(created_date) FROM data WHERE DATE(created_date) = CURDATE())"
+    query2 = "SELECT DISTINCT(SLAExpiration) FROM data WHERE Task_Status = 'Available' AND DATE(created_date) = CURDATE() AND processed = false"
     cursor.execute(query2)
     result = cursor.fetchall()    
     for row in result:
         dt1 = row[0].strftime("%Y/%m/%d")
         dates.append(dt1)
-    
-    query3 = "SELECT max(created_date) FROM data WHERE DATE(created_date) = CURDATE()"
-    cursor.execute(query3)
-    max_date = cursor.fetchone()
-    print(max_date)
-
 
     for i in tasks:
-        query = "SELECT State, COUNT(State) FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' AND created_date IN (SELECT max(created_date) FROM data WHERE DATE(created_date) = CURDATE()) {} GROUP BY State ORDER BY State".format(i,foo)
+        query = "SELECT State, COUNT(State) FROM data  WHERE Task_Name = '{}' AND Task_Status = 'Available' AND DATE(created_date) = CURDATE() AND processed = false {} GROUP BY State ORDER BY State".format(i,foo)
         cursor.execute(query)
         result = cursor.fetchall()
 
