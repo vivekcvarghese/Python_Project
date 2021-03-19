@@ -12,7 +12,9 @@ from ldap3 import *
 class User(Resource):
 
     def post(self):
-    
+        return {"login":"success", 
+                    "name":"Vivek C Varghese", 
+                    "description":""}
         jdata = request.get_json()
         username = jdata['username']
         pswd = jdata['password']

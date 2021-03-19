@@ -58,8 +58,8 @@ class GetData(Resource):
 
         cursor, database = connect_db()
 
-        query = "TRUNCATE TABLE data"
-        cursor.execute(query)
+        # query = "TRUNCATE TABLE data"
+        # cursor.execute(query)
         try:
             DataInsertion(rvsi)
             DataInsertion(sp2)
