@@ -13,7 +13,8 @@ class User(Resource):
 
     def post(self):
         return {"login":"success", 
-                    "name":"Vivek C Varghese", 
+                    "name":"Vivek C Varghese",
+                    "account_name":"CH20005",
                     "description":""}
         jdata = request.get_json()
         username = jdata['username']
@@ -29,7 +30,8 @@ class User(Resource):
             description = str(conn.entries[0].description)
             
             return {"login":"success", 
-                    "name":Name, 
+                    "name":Name,
+                    "account_name":AccountName, 
                     "description":description}
         
         except:
