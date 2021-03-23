@@ -1,4 +1,6 @@
 import json
+import datetime
+import json
 
 from connection import connect_db
 from flask import request
@@ -26,3 +28,30 @@ class EmployeeReport(Resource):
         database.close()
 
         return {"status": "submitted"}
+    
+    def get(self):
+
+        cursor, database = connect_db()
+        query = "SELECT * FROM emp_report WHERE DATE(created_date) = CURDATE()"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        output = []
+        report = {}
+        for row in result:
+            report["username"] = row[1]
+            report["account_name"] = row[2]
+            report["status"] = row[3]
+            report["time"] = row[4].strftime("%Y/%m/%d")
+
+            output.append(report)
+            report = {}
+
+        print(output)
+
+        cursor.close()
+        database.close()
+
+        output = json.dumps(output, indent = 4)   
+
+        return output
