@@ -15,7 +15,8 @@ class User(Resource):
         return {"login":"success", 
                     "name":"Vivek C Varghese",
                     "account_name":"CH20005",
-                    "description":""}
+                    "description":"d",
+                    "cn":"User"}
         jdata = request.get_json()
         username = jdata['username']
         pswd = jdata['password']
