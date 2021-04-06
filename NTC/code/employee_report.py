@@ -15,16 +15,18 @@ class EmployeeReport(Resource):
 
         jdata = request.get_json()
         username = jdata['username']
-        status = jdata['status']
+        inputs = jdata['inputs']
         account_name = jdata['account_name']
-
+        
         cursor, database = connect_db()
-        query = """INSERT INTO emp_report (username, account_name, status) VALUES (%s, %s, %s)"""
-        values = (username, account_name, status)
-        cursor.execute(query, values)
+        
+        for i in inputs:
+
+            query = """INSERT INTO emp_report (username, account_name, order_number, status, comments) VALUES (%s, %s, %s, %s, %s)"""
+            values = (username, account_name, i['orderNumber'], i['status'], i['comments'])
+            cursor.execute(query, values)
 
         cursor.close()
-
         database.commit()
         database.close()
 
