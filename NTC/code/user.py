@@ -13,7 +13,7 @@ class User(Resource):
 
     def post(self):
         return {"login":"success", 
-                    "name":"Name",
+                    "name":"vivel",
                     "account_name":"AccountName", 
                     "description": "Admin",
                     "cn":"cn"}

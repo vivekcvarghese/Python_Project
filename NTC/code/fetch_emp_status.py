@@ -11,7 +11,8 @@ def fetchStatus(date):
             foo = "DATE(created_date) = '{}'".format(date)
 
         cursor, database = connect_db()
-        query = "SELECT DISTINCT(account_name), username, created_date FROM emp_report WHERE {}".format(foo)
+        query = "SELECT account_name, username, MAX(created_date) FROM emp_report WHERE {} GROUP BY account_name".format(foo)
+        print(query)
         cursor.execute(query)
         res = cursor.fetchall()
 
