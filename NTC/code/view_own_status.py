@@ -39,7 +39,7 @@ class ViewOwnStatus(Resource):
         if row != None:
             final["user_status"] = output
             final["username"] = row[1]
-            final["account_name"] = row[0]
+            final["account_name"] = row[2]
             today = datetime.date.today()
             yesterday = today - datetime.timedelta(days = 1)
             date = row[6].strftime("%Y-%m-%d")
