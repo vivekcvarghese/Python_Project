@@ -1,9 +1,9 @@
 import MySQLdb
 import pandas as pd
 import xlrd
-import datetime
 import json
 
+import datetime
 from connection import connect_db
 from rd_data import RdData
 from tablib import Dataset
@@ -13,16 +13,14 @@ from flask_restful import Resource, reqparse
 class GetData(Resource):
 
     def get(self):
-
+      
         opData = RdData()
         opData = json.dumps(opData, indent = 4)   
-
         return opData
 
     def post(self):
 
         def FormatDate(SLAexp):
-
             lst = []
             for i in range(len(SLAexp)):
                 b = SLAexp[i].split(' ')[0]
@@ -33,7 +31,7 @@ class GetData(Resource):
                 lst.append(d)
             return lst
 
-        def DataInsertion(raw_data):
+        def DataInsertion(raw_data, timestampStr):
 
             data = Dataset().load(raw_data)
             
@@ -47,8 +45,8 @@ class GetData(Resource):
 
             for i in range(len(Order_Number)):
                 
-                query = """INSERT INTO data (Order_Number, State, Task_Name, Task_Status, SLAExpiration, processed) VALUES (%s, %s, %s, %s, %s,false)"""
-                values = (Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i])
+                query = """INSERT INTO data (Order_Number, State, Task_Name, Task_Status, SLAExpiration, processed, created_date) VALUES (%s, %s, %s, %s, %s, false, %s)"""
+                values = (Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i], timestampStr)
                 cursor.execute(query, values)
             
             return
@@ -60,13 +58,17 @@ class GetData(Resource):
 
         query = "UPDATE data SET processed = true"
         cursor.execute(query)
-        try:
-            DataInsertion(rvsi)
-            DataInsertion(sp2)
-        except:
-            return json.dumps({"error_in_file" : "Invalid file"})
-        cursor.close()
 
+        dateTimeObj = datetime.datetime.now()
+        timestampStr = dateTimeObj.strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            DataInsertion(rvsi, timestampStr)
+            DataInsertion(sp2, timestampStr)
+
+        except:
+            return {"response" : "Invalid file"}
+
+        cursor.close()
         # Commit the transaction
         database.commit()
 

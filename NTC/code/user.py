@@ -13,9 +13,9 @@ class User(Resource):
 
     def post(self):
         return {"login":"success", 
-                    "name":"vivel",
+                    "name":"vivek",
                     "account_name":"AccountName", 
-                    "description": "",
+                    "description": "Admin",
                     "cn":"cn"}
         jdata = request.get_json()
         username = jdata['username']

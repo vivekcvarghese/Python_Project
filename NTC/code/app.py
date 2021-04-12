@@ -8,6 +8,7 @@ from date_filter import DateFilter
 from employee_report import EmployeeReport
 from emp_rprt_date import EmpRprtDate
 from view_own_status import ViewOwnStatus
+from task_dropdown import DropDown
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ api.add_resource(DateFilter, '/filter')
 api.add_resource(EmployeeReport, '/empreport')
 api.add_resource(EmpRprtDate, '/empreport/date')
 api.add_resource(ViewOwnStatus, '/mystatus')
+api.add_resource(DropDown, '/dropdown')
 
 
 if __name__ == '__main__':
