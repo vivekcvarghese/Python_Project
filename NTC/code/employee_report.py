@@ -1,5 +1,6 @@
 import json
 import datetime
+import math
 
 
 from connection import connect_db
@@ -14,17 +15,32 @@ class EmployeeReport(Resource):
     def post(self):
 
         jdata = request.get_json()
-        username = jdata['username']
-        inputs = jdata['inputs']
-        account_name = jdata['account_name']
-        
-        cursor, database = connect_db()
-        
-        for i in inputs:
+        data = jdata['inputs']
 
-            query = """INSERT INTO emp_report (username, account_name, order_number, status, comments) VALUES (%s, %s, %s, %s, %s)"""
-            values = (username, account_name, i['orderNumber'], i['status'], i['comments'])
-            cursor.execute(query, values)
+        cursor, database = connect_db()
+
+        query = "SELECT band1, price FROM target_table WHERE  process = '{}'".format(data['Process']) 
+        cursor.execute(query)
+        res = cursor.fetchone()
+
+        if res[0] != None:
+            target_time = 1/res[0] 
+            target_time = round(target_time,2)
+            price = res[1]
+        else:
+            target_time = 0
+            price = 0
+
+
+       
+        query = """INSERT INTO emp_report (username, account_name, date_dt, order_number, client, task, 
+        process, state, startTime, endTime, totalTime, status, TargetTime, DayWiseBand, Revenue) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        values = (data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
+        data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
+        data['status'], target_time, 111, price)
+        
+        cursor.execute(query, values)
 
         cursor.close()
         database.commit()

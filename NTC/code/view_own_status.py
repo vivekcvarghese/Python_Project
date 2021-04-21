@@ -27,36 +27,30 @@ class ViewOwnStatus(Resource):
         cursor.execute(query)
         result = cursor.fetchall()
 
-        row = None
+        print(result)
         output = []
-        final = {}
         for row in result:
             op = {}
-            op["order_number"] = row[3]
-            op["status"] = row[4]
-            op["comments"] = row[5]
+            op["date"] = row[3].strftime("%d-%m-%Y")
+            op["order_number"] = row[4]
+            op["Client"] = row[5]
+            op["Task"] = row[6]
+            op["Process"] = row[7]
+            op["state"] = row[8]
+            op["startTime"] = str(row[9])
+            op["endTime"] = str(row[10])
+            op["totalTime"] = row[11]
+            op["status"] = row[12]
+            op["username"] = row[1]
             output.append(op)
-        if row != None:
-            final["user_status"] = output
-            final["username"] = row[1]
-            final["account_name"] = row[2]
-            today = datetime.date.today()
-            yesterday = today - datetime.timedelta(days = 1)
-            date = row[6].strftime("%Y-%m-%d")
-            if (date == str(today)):
-                final["time"] = "{}, Today".format(row[6].strftime("%I:%M %p"))
-            elif (date == str(yesterday)):
-                final["time"] = "{}, Yesterday".format(row[6].strftime("%I:%M %p"))
-            else:
-                final["time"] = row[6].strftime("%I:%M %p,  %d-%m-%Y")
-
-
-
+        
         cursor.close()
         database.commit()
         database.close()
 
-        final_output = json.dumps(final, indent = 4)   
+        final_output = json.dumps(output, indent = 4)   
+
+        print(final_output)
 
         return final_output
     
