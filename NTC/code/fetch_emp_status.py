@@ -6,51 +6,47 @@ from connection import connect_db
 def fetchStatus(date):
 
         if(date == 0):
-            foo = "DATE(created_date) = CURDATE()"
+            foo = "date_dt = CURDATE()"
         else:
-            foo = "DATE(created_date) = '{}'".format(date)
+            foo = "date_dt = '{}'".format(date)
 
         cursor, database = connect_db()
-        query = "SELECT account_name, username, MAX(created_date) FROM emp_report WHERE {} GROUP BY account_name".format(foo)
-        print(query)
+        query = "SELECT * FROM employee"
         cursor.execute(query)
         res = cursor.fetchall()
 
+        flag = None
         final_array = []
-        today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days = 1)
-
         for i in res:
             final = {}
-            ar = []
-            query = "SELECT * FROM emp_report WHERE {} AND account_name = '{}' ORDER BY created_date DESC".format(foo, i[0])
+            query = "SELECT COUNT(order_number), SUM(targetTime)*100, SUM(totalTime), SUM(revenue) FROM emp_report WHERE {} AND account_name = '{}'".format(foo, i[1])
+ 
             cursor.execute(query)
-            result = cursor.fetchall()
+            result = cursor.fetchone()
             
-            for j in result:
-                st = {}
-                st["order_number"] = j[3]
-                st["status"] = j[4]
-                st["comments"] = j[5]
-
-                ar.append(st)
-            
-            final["user_status"] = ar
-            final["username"] = i[1]
-            final["account_name"] = i[0]
-            date = i[2].strftime("%Y-%m-%d")
-            if (date == str(today)):
-                final["time"] = "{}, Today".format(i[2].strftime("%I:%M %p"))
-            elif (date == str(yesterday)):
-                final["time"] = "{}, Yesterday".format(i[2].strftime("%I:%M %p"))
+            final["emp_code"] = i[1]
+            final["name"] = i[2]
+            if i[3] == None:
+                final["doj"] = "NA"
             else:
-                final["time"] = i[2].strftime("%I:%M %p,  %d-%m-%Y")
-
+                final["doj"] = i[3].strftime("%d-%m-%Y")
+            final["search"] = i[4]
+            final["client"] = i[5]
+            final["task"] = i[6]
+            if result[0] != 0:
+                flag = 1
+                final["order_count"] = result[0]
+                final["productivity"] = float(round(result[1],1)) 
+                final["utilization"] = float(round(result[2],2))
+                final["revenue"] = float(round(result[1],2))
+            
             final_array.append(final)
 
 
         cursor.close()
         database.close()
+        if flag == None:
+            final_array = []
 
         output = json.dumps(final_array, indent = 4)   
 

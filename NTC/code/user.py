@@ -13,8 +13,8 @@ class User(Resource):
 
     def post(self):
         return {"login":"success", 
-                    "name":"vivek",
-                    "account_name":"AccountName", 
+                    "name":"ATIF AHMED",
+                    "account_name":"ER167", 
                     "description": "",
                     "cn":"cn"}
         jdata = request.get_json()

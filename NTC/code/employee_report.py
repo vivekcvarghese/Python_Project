@@ -23,9 +23,9 @@ class EmployeeReport(Resource):
         cursor.execute(query)
         res = cursor.fetchone()
 
-        if res[0] != None:
+        if res != None and data['status'] == 'Completed/Submitted' :
             target_time = 1/res[0] 
-            target_time = round(target_time,2)
+            # target_time = round(target_time,2)
             price = res[1]
         else:
             target_time = 0
@@ -38,9 +38,19 @@ class EmployeeReport(Resource):
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         values = (data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
         data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
-        data['status'], target_time, 111, price)
+        data['status'], target_time, 0, price)
         
         cursor.execute(query, values)
+
+        query = "SELECT SUM(TargetTime) FROM emp_report WHERE account_name = '{}' AND date_dt = '{}' AND status = 'Completed/Submitted'".format(data['account_name'], data['date'])
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        dwb = (result[0]/1)*100
+        dwb = round(dwb,1)
+     
+        query = "UPDATE emp_report SET DayWiseBand = {} WHERE account_name = '{}' AND date_dt = '{}' AND status = 'Completed/Submitted'".format(dwb, data['account_name'], data['date'])
+        cursor.execute(query)
 
         cursor.close()
         database.commit()

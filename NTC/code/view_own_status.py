@@ -17,9 +17,9 @@ class ViewOwnStatus(Resource):
         account_name = jdata['account_name']
 
         if(date == ''):
-            foo = "DATE(created_date) = CURDATE()"
+            foo = "date_dt = CURDATE()"
         else:
-            foo = "DATE(created_date) = '{}'".format(date)
+            foo = "date_dt = '{}'".format(date)
         
         cursor, database = connect_db()
         
@@ -37,11 +37,14 @@ class ViewOwnStatus(Resource):
             op["Task"] = row[6]
             op["Process"] = row[7]
             op["state"] = row[8]
-            op["startTime"] = str(row[9])
-            op["endTime"] = str(row[10])
-            op["totalTime"] = row[11]
+            op["start_Time"] = str(row[9])
+            op["end_Time"] = str(row[10])
+            op["total_Time"] = row[11]
             op["status"] = row[12]
-            op["username"] = row[1]
+            # op["target_time"] = row[13]
+            # op["DWB"] = float(row[14])
+            # op["revenue"] = row[15]
+            # op["username"] = row[1]
             output.append(op)
         
         cursor.close()
