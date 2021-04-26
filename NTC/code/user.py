@@ -15,7 +15,7 @@ class User(Resource):
         return {"login":"success", 
                     "name":"ATIF AHMED",
                     "account_name":"ER167", 
-                    "description": "",
+                    "description": "Admin",
                     "cn":"cn"}
         jdata = request.get_json()
         username = jdata['username']

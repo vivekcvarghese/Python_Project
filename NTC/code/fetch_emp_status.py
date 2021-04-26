@@ -19,7 +19,7 @@ def fetchStatus(date):
         final_array = []
         for i in res:
             final = {}
-            query = "SELECT COUNT(order_number), SUM(targetTime)*100, SUM(totalTime), SUM(revenue) FROM emp_report WHERE {} AND account_name = '{}'".format(foo, i[1])
+            query = "SELECT COUNT(order_number), SUM(targetTime)*100, (SUM(totalTime)/480)*100, SUM(revenue) FROM emp_report WHERE {} AND account_name = '{}'".format(foo, i[1])
  
             cursor.execute(query)
             result = cursor.fetchone()
@@ -38,7 +38,7 @@ def fetchStatus(date):
                 final["order_count"] = result[0]
                 final["productivity"] = float(round(result[1],1)) 
                 final["utilization"] = float(round(result[2],2))
-                final["revenue"] = float(round(result[1],2))
+                final["revenue"] = float(round(result[3],2))
             
             final_array.append(final)
 

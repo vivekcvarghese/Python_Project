@@ -41,10 +41,10 @@ class ViewOwnStatus(Resource):
             op["end_Time"] = str(row[10])
             op["total_Time"] = row[11]
             op["status"] = row[12]
-            # op["target_time"] = row[13]
-            # op["DWB"] = float(row[14])
-            # op["revenue"] = row[15]
-            # op["username"] = row[1]
+            op["target_time"] = row[13]
+            op["DWB"] = float(row[14])
+            op["revenue"] = row[15]
+            op["username"] = row[1]
             output.append(op)
         
         cursor.close()

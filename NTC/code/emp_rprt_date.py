@@ -11,7 +11,6 @@ class EmpRprtDate(Resource):
     def post(self):
 
         jdata = request.get_json()
-        print(jdata)
         date = jdata['dateFilter']
 
         return fetchStatus(date)
