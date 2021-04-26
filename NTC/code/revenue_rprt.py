@@ -13,9 +13,19 @@ class RevenueRprt(Resource):
 
         jdata = request.get_json()
         dt = jdata['date']
+        sheet_name = jdata['sheetName']
         dt = dt.split('-')
         month = dt[1]
         year = dt[0]
+
+        if sheet_name == "Revenue":
+            x = "SUM(revenue)"
+        elif sheet_name == "Productivity":
+            x = "SUM(TargetTime)"
+        elif sheet_name == "Utilization":
+            x = "SUM(totalTime)"
+        elif sheet_name == "Orders":
+            x = "COUNT(order_number)"
 
         cursor, database = connect_db()
         query = "SELECT * FROM employee"
@@ -26,7 +36,7 @@ class RevenueRprt(Resource):
         final_array = []
         for i in res:
             final = {}
-            query = "SELECT SUM(revenue), date_dt FROM emp_report WHERE month(date_dt) = '{}' AND account_name = '{}' GROUP BY date_dt".format(month, i[1])
+            query = "SELECT {}, date_dt FROM emp_report WHERE month(date_dt) = '{}' AND account_name = '{}' GROUP BY date_dt".format(x, month, i[1])
             cursor.execute(query)
             result = cursor.fetchall()
 
@@ -40,7 +50,7 @@ class RevenueRprt(Resource):
             final["client"] = i[5]
             final["task"] = i[6]
             for j in result:
-                final[j[1].strftime("%Y-%m-%d")] = j[0]
+                final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
             
             final_array.append(final)
 
