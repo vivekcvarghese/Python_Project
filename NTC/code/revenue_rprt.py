@@ -49,8 +49,15 @@ class RevenueRprt(Resource):
             final["search"] = i[4]
             final["client"] = i[5]
             final["task"] = i[6]
-            for j in result:
-                final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
+            if sheet_name == "Revenue":
+                total = 0
+                for j in result:
+                    final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
+                    total += j[0]
+                final["total"] = float(round(total, 2))
+            else:
+                for j in result:
+                    final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
             
             final_array.append(final)
 
@@ -68,6 +75,7 @@ class RevenueRprt(Resource):
         output = {}
         output["data"] = final_array
         output["dates"] = dates
+        output["sheet"] = sheet_name
 
         output = json.dumps(output, indent = 4)
         return output
