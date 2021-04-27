@@ -45,10 +45,13 @@ class EmployeeReport(Resource):
         query = "SELECT SUM(TargetTime) FROM emp_report WHERE account_name = '{}' AND date_dt = '{}' AND status = 'Completed/Submitted'".format(data['account_name'], data['date'])
         cursor.execute(query)
         result = cursor.fetchone()
+        
+        if result[0] != None:
+            dwb = (result[0]/1)*100
+            dwb = round(dwb,1)
+        else:
+            dwb = 0
 
-        dwb = (result[0]/1)*100
-        dwb = round(dwb,1)
-     
         query = "UPDATE emp_report SET DayWiseBand = {} WHERE account_name = '{}' AND date_dt = '{}' AND status = 'Completed/Submitted'".format(dwb, data['account_name'], data['date'])
         cursor.execute(query)
 
