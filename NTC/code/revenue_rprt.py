@@ -36,7 +36,7 @@ class RevenueRprt(Resource):
         final_array = []
         for i in res:
             final = {}
-            query = "SELECT {}, date_dt FROM emp_report WHERE month(date_dt) = '{}' AND account_name = '{}' GROUP BY date_dt".format(x, month, i[1])
+            query = "SELECT {}, date_dt FROM emp_report WHERE month(date_dt) = '{}' AND account_name = '{}' AND year(date_dt) = '{}' GROUP BY date_dt".format(x, month, i[1], year)
             cursor.execute(query)
             result = cursor.fetchall()
 

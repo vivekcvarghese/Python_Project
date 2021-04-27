@@ -9,6 +9,7 @@ from employee_report import EmployeeReport
 from emp_rprt_date import EmpRprtDate
 from view_own_status import ViewOwnStatus
 from revenue_rprt import RevenueRprt
+from clientwise_rprt import ClientRprt
 from task_dropdown import DropDown
 from flask_cors import CORS
 
@@ -25,7 +26,7 @@ api.add_resource(EmpRprtDate, '/empreport/date')
 api.add_resource(ViewOwnStatus, '/mystatus')
 api.add_resource(DropDown, '/dropdown')
 api.add_resource(RevenueRprt, '/revenue')
-
+api.add_resource(ClientRprt, '/clientrprt')
 
 if __name__ == '__main__':
     app.run(debug=True)  
