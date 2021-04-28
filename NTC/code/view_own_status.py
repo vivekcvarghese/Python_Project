@@ -45,6 +45,7 @@ class ViewOwnStatus(Resource):
             # op["DWB"] = float(row[14])
             # op["revenue"] = row[15]
             # op["username"] = row[1]
+            op["id"] = row[0]
             output.append(op)
         
         cursor.close()
