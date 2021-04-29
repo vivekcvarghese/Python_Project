@@ -32,15 +32,22 @@ class EmployeeReport(Resource):
             price = 0
 
 
-       
-        query = """INSERT INTO emp_report (username, account_name, date_dt, order_number, client, task, 
-        process, state, startTime, endTime, totalTime, status, TargetTime, DayWiseBand, Revenue) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        values = (data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
-        data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
-        data['status'], target_time, 0, price)
-        
-        cursor.execute(query, values)
+        if data['id'] == "":
+
+            query = """INSERT INTO emp_report (username, account_name, date_dt, order_number, client, task, 
+            process, state, startTime, endTime, totalTime, status, TargetTime, DayWiseBand, Revenue) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            values = (data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
+            data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
+            data['status'], target_time, 0, price)
+            
+            cursor.execute(query, values)
+        else:
+            query = "UPDATE emp_report SET date_dt = %s, order_number = %s, client = %s, task = %s, process = %s, state = %s, startTime = %s, endTime = %s, totalTime = %s, status = %s, TargetTime = %s, DayWiseBand = %s, Revenue = %s WHERE id = '{}'".format(data['id'])
+            values = (data['date'], data['orderNumber'], data['Client'], data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
+            data['status'], target_time, 0, price)
+    
+            cursor.execute(query, values)
 
         query = "SELECT SUM(TargetTime) FROM emp_report WHERE account_name = '{}' AND date_dt = '{}' AND status = 'Completed/Submitted'".format(data['account_name'], data['date'])
         cursor.execute(query)

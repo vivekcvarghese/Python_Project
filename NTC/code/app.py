@@ -11,6 +11,7 @@ from view_own_status import ViewOwnStatus
 from revenue_rprt import RevenueRprt
 from clientwise_rprt import ClientRprt
 from task_dropdown import DropDown
+from fetch_single_status import FetchSingleStatus
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -27,6 +28,7 @@ api.add_resource(ViewOwnStatus, '/mystatus')
 api.add_resource(DropDown, '/dropdown')
 api.add_resource(RevenueRprt, '/revenue')
 api.add_resource(ClientRprt, '/clientrprt')
+api.add_resource(FetchSingleStatus, '/singlestatus')
 
 if __name__ == '__main__':
     app.run(debug=True)  

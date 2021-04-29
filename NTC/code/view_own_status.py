@@ -1,5 +1,6 @@
 import json
-import datetime
+import datetime 
+
 
 
 from connection import connect_db
@@ -26,8 +27,7 @@ class ViewOwnStatus(Resource):
         query = "SELECT * FROM emp_report WHERE account_name = '{}' AND {}".format(account_name, foo)
         cursor.execute(query)
         result = cursor.fetchall()
-
-        print(result)
+   
         output = []
         for row in result:
             op = {}
@@ -39,7 +39,7 @@ class ViewOwnStatus(Resource):
             op["state"] = row[8]
             op["start_Time"] = str(row[9])
             op["end_Time"] = str(row[10])
-            op["total_Time"] = row[11]
+            #op["total_Time"] = row[11]
             op["status"] = row[12]
             # op["target_time"] = row[13]
             # op["DWB"] = float(row[14])
@@ -49,12 +49,9 @@ class ViewOwnStatus(Resource):
             output.append(op)
         
         cursor.close()
-        database.commit()
         database.close()
 
         final_output = json.dumps(output, indent = 4)   
-
-        print(final_output)
 
         return final_output
     

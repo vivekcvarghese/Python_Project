@@ -33,5 +33,5 @@ class DropDown(Resource):
 
         cursor.close()
         database.close()
-
+  
         return op
