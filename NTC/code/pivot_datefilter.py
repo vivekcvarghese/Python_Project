@@ -4,19 +4,16 @@ from rd_data import RdData
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
 
-class DateFilter(Resource):
+class PivotDateFilter(Resource):
 
     def post(self):
 
         jdata = request.get_json()
-        dates = jdata['date']
-        pivot_date = jdata['pivotdate']
+        dates = jdata['pivotDate']
+        time = jdata['time']
+        filters = []
 
-        opData = RdData(dates, pivot_date)
+        opData = RdData(filters,dates,time)
         opData = json.dumps(opData, indent = 4)   
 
         return opData
-
-        
-
-    
