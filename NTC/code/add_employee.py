@@ -24,20 +24,20 @@ class AddEmployee(Resource):
 
         cursor, database = connect_db()
 
-        query = "SELECT * FROM target_table"
+        query = "SELECT * FROM employee"
         cursor.execute(query)
         result = cursor.fetchall()
 
         output = []
         for i in result:
             op = {}
-            op["id"] = i[0]
-            op["empcode"] = i[1]
+            op["emp_code"] = i[1]
             op["name"] = i[2]
             op["doj"] = i[3]
             op["search"] = i[4]
             op["client"] = i[5]
             op["task"] = i[6]
+            op["id"] = i[0]
 
             output.append(op)
         
