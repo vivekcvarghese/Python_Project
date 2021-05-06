@@ -78,7 +78,6 @@ class AddEmployee(Resource):
                 client = %s, TASK = %s WHERE id = {}""".format(data["id"])
         values = (data['empcode'], data['name'], data['doj'], data['search'], data['client'],
         data['task'])
-        print(query, values)
         
         cursor.execute(query, values)
     

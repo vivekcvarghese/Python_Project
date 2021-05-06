@@ -28,7 +28,7 @@ def RdData(filters = [], dates = "", time = ""):
 
         
         query2 = "SELECT DISTINCT(SLAExpiration) FROM data WHERE Task_Status = 'Available' AND {}".format(goo)
-        print(query2)
+
         cursor.execute(query2)
         result = cursor.fetchall()    
         for row in result:
