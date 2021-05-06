@@ -1,8 +1,38 @@
 import json
+import datetime
 
 from connection import connect_db
 from flask import request
 from flask_restful import Resource
+
+def getEmployeeDetails(query):
+
+        cursor, database = connect_db()
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        output = []
+        for i in result:
+            op = {}
+            op["emp_code"] = i[1]
+            op["name"] = i[2]
+            if i[3] == None:
+                op["doj"] = "NA"
+            else:
+                op["doj"] = i[3].strftime("%Y-%m-%d")
+            op["search"] = i[4]
+            op["client"] = i[5]
+            op["task"] = i[6]
+            op["id"] = i[0]
+
+            output.append(op)
+        
+        cursor.close()
+        database.close()
+    
+        output = json.dumps(output, indent = 4)   
+        return output
+
 
 class AddEmployee(Resource):
 
@@ -22,30 +52,9 @@ class AddEmployee(Resource):
         return {"response":"Success"}
     def get(self):
 
-        cursor, database = connect_db()
-
         query = "SELECT * FROM employee"
-        cursor.execute(query)
-        result = cursor.fetchall()
 
-        output = []
-        for i in result:
-            op = {}
-            op["emp_code"] = i[1]
-            op["name"] = i[2]
-            op["doj"] = i[3]
-            op["search"] = i[4]
-            op["client"] = i[5]
-            op["task"] = i[6]
-            op["id"] = i[0]
-
-            output.append(op)
-        
-        cursor.close()
-        database.close()
-    
-        output = json.dumps(output, indent = 4)   
-        return output
+        return getEmployeeDetails(query)
         
     @classmethod
     def insert(cls, data):
@@ -75,3 +84,23 @@ class AddEmployee(Resource):
         database.commit()
         database.close()
         return
+
+class EditEmployee(Resource):
+
+    def delete(self, empid):
+        cursor, database = connect_db()
+        
+        query = "DELETE FROM employee WHERE id = {}".format(empid)
+        cursor.execute(query)
+
+        cursor.close()
+        database.commit()
+        database.close()
+
+        return
+
+    def get(self, empid):
+
+        query = "SELECT * FROM employee WHERE id = {}".format(empid)
+        
+        return getEmployeeDetails(query)
