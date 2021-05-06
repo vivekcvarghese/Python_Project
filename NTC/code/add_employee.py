@@ -14,7 +14,7 @@ def getEmployeeDetails(query):
         output = []
         for i in result:
             op = {}
-            op["emp_code"] = i[1]
+            op["empcode"] = i[1]
             op["name"] = i[2]
             if i[3] == None:
                 op["doj"] = "NA"
@@ -52,7 +52,7 @@ class AddEmployee(Resource):
         return {"response":"Success"}
     def get(self):
 
-        query = "SELECT * FROM employee"
+        query = "SELECT * FROM employee ORDER BY name"
 
         return getEmployeeDetails(query)
         
@@ -74,10 +74,12 @@ class AddEmployee(Resource):
     def update(cls, data):
         cursor, database = connect_db()
       
-        query = """UPDATE  employee SET(empcode = %s, name = %s, doj = %s, search = %s, 
-                client = %s, TASK = %s) WHERE id = {}""".format(data["id"])
+        query = """UPDATE employee SET empcode = %s, name = %s, doj = %s, search = %s, 
+                client = %s, TASK = %s WHERE id = {}""".format(data["id"])
         values = (data['empcode'], data['name'], data['doj'], data['search'], data['client'],
         data['task'])
+        print(query, values)
+        
         cursor.execute(query, values)
     
         cursor.close()
@@ -89,7 +91,7 @@ class EditEmployee(Resource):
 
     def delete(self, empid):
         cursor, database = connect_db()
-        
+
         query = "DELETE FROM employee WHERE id = {}".format(empid)
         cursor.execute(query)
 
@@ -102,5 +104,4 @@ class EditEmployee(Resource):
     def get(self, empid):
 
         query = "SELECT * FROM employee WHERE id = {}".format(empid)
-        
         return getEmployeeDetails(query)
