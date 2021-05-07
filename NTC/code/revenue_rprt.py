@@ -49,16 +49,11 @@ class RevenueRprt(Resource):
             final["search"] = i[4]
             final["client"] = i[5]
             final["task"] = i[6]
-            if sheet_name == "Revenue":
-                total = 0
-                for j in result:
-                    final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
-                    total += j[0]
-                final["total"] = float(round(total, 2))
-            else:
-                for j in result:
-                    final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
-            
+            total = 0
+            for j in result:
+                final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
+                total += j[0]
+            final["total"] = float(round(total, 2))
             final_array.append(final)
 
         cursor.close()
@@ -66,7 +61,10 @@ class RevenueRprt(Resource):
 
         m = int(month)
         y = int(year)
-        ndays = (date(y, m+1, 1) - date(y, m, 1)).days
+        if m == 12:
+            ndays = (date(y+1, 1, 1) - date(y, m, 1)).days
+        else:
+            ndays = (date(y, m+1, 1) - date(y, m, 1)).days
         d1 = date(y, m, 1)
         d2 = date(y, m, ndays)
         delta = d2 - d1
