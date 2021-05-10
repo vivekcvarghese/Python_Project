@@ -12,15 +12,27 @@ from ldap3 import *
 class User(Resource):
 
     def post(self):
-        return {"login":"success", 
-                    "name":"ANIL KUMAR KOLLA",
-                    "account_name":"ER086", 
-                    "description": "Admin",
-                    "cn":"cn"}
+        
         jdata = request.get_json()
         username = jdata['username']
         pswd = jdata['password']
         
+        if (username == "admin" and pswd =="admin"):
+            return {"login":"success", 
+                    "name":"ANIL KUMAR KOLLA",
+                    "account_name":"ER086", 
+                    "description": "Admin",
+                    "cn":"cn"}
+        elif (username == "employee" and pswd =="employee"):
+            return {"login":"success", 
+                    "name":"ANIL KUMAR KOLLA",
+                    "account_name":"ER086", 
+                    "description": "",
+                    "cn":"cn"}
+        else:
+            return {"login":"invalid credentials"}
+
+
         try:
             AccountName = username.split("\\")[1]
             server = Server('ntcbpohyd.com')
