@@ -1,0 +1,51 @@
+ASK,OE,Billing,Search,Search,No Orders,Order Entry,TIT - Calling,Commitment Typing,2/O,PMM / CO - IL,Billing,Attorney Decision,TRGC - Quality Control,TX - Exceptions,BII,Regular/RVSI 2 Owner Search,Sp2 - 2 Owner Search,Abstract Indexing Module,Vm Quality Control,Update - Va,Typing,Completed/Submitted,AL
+DT,Search,Decorating,,Typing,Training,Portal Entry,NONTIT - Calling,Property Processing,PMM / CO - IL,PMM / CO - IN,,Attorneydelivere,Ltc - CommitmentPrep,TX - Prior Policy,Regular/RVSI Condolienexception,Regular/RVSI Search - AZ,Sp2 - Search - AZ,Portal Typing (RVSI & SP2),Update VM QualityControl,Update - Ga,,Hold/Suspended,AK
+Sp,Tax,Exam,,,Meeting,,TIT - Tax Search,Portal Typing,PMM / CO - IN,PMM / CO - OH,,Data Trace,,,Regular/RVSI Hoadatabase,Regular/RVSI Search - CA,Sp2 - Search - CA,Template Typing (RVSI & SP2),,Current Owner - Va,,ContactManager,AZ
+TW,Typing,HOA,,,,,NONTIT - Tax Search,Property Typing,PMM / CO - OH,PMM / CO - MI,,Delivere,,,Sp2 - Hoadatabase,Regular/RVSI Search - CO,Sp2 - Search - Co,Typing Work (RVSI & SP2),,Current Owner - Ga,,Raised a Tickect,AR
+NonProd,Exam,Search,,,,,Ticket Order,Tax Typing - Purchase,PMM / CO - MI,Ticket Order,,Njtaxsearch,,,,Regular/RVSI Search - FL,Sp2 - Search - FL,TitleIQQualityControl (Only Typing),,Redo Search,,Placed for Review,CA
+,,TXExceptions,,,,,DT/TW Tax Calling,Tax Typing - Refi,Updates IL,,,Oslocateproperty,,,,Regular/RVSI Search - GA,Sp2 - Search - GA,,,Two Owner - Va,,Flipped,CO
+,,Typing,,,,,,Ticket Order,Updates - MI,,,Pacersearch,,,,Regular/RVSI Search - IL,Sp2 - Search - NV,,,Full Search - Va,,,CT
+,,VMQC,,,,,,,Updates - OH,,,Patriot Search,,,,Regular/RVSI Search - In,Sp2 - Search - OH,,,Full Search - Ga,,,DE
+,,,,,,,,,Updates - IN,,,Portal Upload,,,,Regular/RVSI Search - MI,Sp2 - Search - UT,,,,,,DC
+,,,,,,,,,Document Search,,,Presearch,,,,Regular/RVSI Search - MN,Sp2 - Search - TX,,,,,,FL
+,,,,,,,,,"Misc (MDR, TJL, UCC, ect.)",,,Signatureuppercourtcontinrequest,,,,Regular/RVSI Search - NV,Sp2 - Search - VA,,,,,,GA
+,,,,,,,,,Ticket Order,,,Special Instructions,,,,Regular/RVSI Search - OH,Sp2 - Search - IL,,,,,,HI
+,,,,,,,,,Preprocessing,,,Specialinstructions - M&S,,,,Regular/RVSI Search - TX,Sp2 - Search - IN,,,,,,ID
+,,,,,,,,,,,,Tideland,,,,Regular/RVSI Search - UT,Sp2 - Search - NJ,,,,,,IL
+,,,,,,,,,,,,Update Data Entry,,,,Regular/RVSI Search - VA,Sp2 - Search - MI,,,,,,IN
+,,,,,,,,,,,,Updatepresearch,,,,Regular/RVSI Full Search,Sp2 - Full Search,,,,,,IA
+,,,,,,,,,,,,Vendor Certification,,,,Regular/RVSI Full Search - IL,Sp2 - Update Search,,,,,,KS
+,,,,,,,,,,,,,,,,Regular/RVSI Full Search - TX,Sp2 - SearchFix,,,,,,KY
+,,,,,,,,,,,,,,,,Judgment Lien Search,Review,,,,,,LA
+,,,,,,,,,,,,,,,,Update Search,Contact Manager,,,,,,ME
+,,,,,,,,,,,,,,,,Regular/RVSI Search - NJ,,,,,,,MD
+,,,,,,,,,,,,,,,,Extended Update Search (RVSI & SP2),,,,,,,MA
+,,,,,,,,,,,,,,,,TitleIQQualityControl (including Typing),,,,,,,MI
+,,,,,,,,,,,,,,,,TitleIQQualityControl (only Search),,,,,,,MN
+,,,,,,,,,,,,,,,,Review,,,,,,,MS
+,,,,,,,,,,,,,,,,,,,,,,,MO
+,,,,,,,,,,,,,,,,,,,,,,,MT
+,,,,,,,,,,,,,,,,,,,,,,,NE
+,,,,,,,,,,,,,,,,,,,,,,,NV
+,,,,,,,,,,,,,,,,,,,,,,,NH
+,,,,,,,,,,,,,,,,,,,,,,,NJ
+,,,,,,,,,,,,,,,,,,,,,,,NM
+,,,,,,,,,,,,,,,,,,,,,,,NY
+,,,,,,,,,,,,,,,,,,,,,,,NC
+,,,,,,,,,,,,,,,,,,,,,,,ND
+,,,,,,,,,,,,,,,,,,,,,,,OH
+,,,,,,,,,,,,,,,,,,,,,,,OK
+,,,,,,,,,,,,,,,,,,,,,,,OR
+,,,,,,,,,,,,,,,,,,,,,,,PA
+,,,,,,,,,,,,,,,,,,,,,,,RI
+,,,,,,,,,,,,,,,,,,,,,,,SC
+,,,,,,,,,,,,,,,,,,,,,,,SD
+,,,,,,,,,,,,,,,,,,,,,,,TN
+,,,,,,,,,,,,,,,,,,,,,,,TX
+,,,,,,,,,,,,,,,,,,,,,,,UT
+,,,,,,,,,,,,,,,,,,,,,,,VT
+,,,,,,,,,,,,,,,,,,,,,,,VA
+,,,,,,,,,,,,,,,,,,,,,,,WA
+,,,,,,,,,,,,,,,,,,,,,,,WV
+,,,,,,,,,,,,,,,,,,,,,,,WI
+,,,,,,,,,,,,,,,,,,,,,,,WY
