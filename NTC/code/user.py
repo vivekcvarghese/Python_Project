@@ -25,8 +25,8 @@ class User(Resource):
                     "cn":"cn"}
         elif (username == "employee" and pswd =="employee"):
             return {"login":"success", 
-                    "name":"ANIL KUMAR KOLLA",
-                    "account_name":"ER086", 
+                    "name":"KUKUTLA SRAVAN",
+                    "account_name":"ER327", 
                     "description": "",
                     "cn":"cn"}
         else:

@@ -33,12 +33,18 @@ def fetchStatus(date):
             final["search"] = i[4]
             final["client"] = i[5]
             final["task"] = i[6]
+            
             if result[0] != 0:
                 flag = 1
                 final["order_count"] = result[0]
                 final["productivity"] = float(round(result[1],1)) 
                 final["utilization"] = float(round(result[2],2))
                 final["revenue"] = float(round(result[3],2))
+            else:
+                final["order_count"] = 0
+                final["productivity"] = 0
+                final["utilization"] = 0
+                final["revenue"] = 0
             
             final_array.append(final)
 
