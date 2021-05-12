@@ -35,8 +35,9 @@ class ClientRprt(Resource):
                 for j in res:
                     final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
                     total += j[0]
-                final['total'] = float(round(total, 2))
-                final_array.append(final)
+                if total != 0:
+                    final['total'] = float(round(total, 2))
+                    final_array.append(final)
 
         cursor.close()
         database.close()
