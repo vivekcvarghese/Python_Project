@@ -19,8 +19,8 @@ class User(Resource):
         
         if (username == "admin" and pswd =="admin"):
             return {"login":"success", 
-                    "name":"ANIL KUMAR KOLLA",
-                    "account_name":"ER086", 
+                    "name":"P ASHWINI KUMARI",
+                    "account_name":"ES086", 
                     "description": "Admin",
                     "cn":"cn"}
         elif (username == "employee" and pswd =="employee"):
