@@ -19,7 +19,7 @@ class User(Resource):
         
         if (username == "admin" and pswd =="admin"):
             return {"login":"success", 
-                    "name":"P ASHWINI KUMARI",
+                    "name":"ASHWINI KUMARI",
                     "account_name":"ES086", 
                     "description": "Admin",
                     "cn":"cn"}
