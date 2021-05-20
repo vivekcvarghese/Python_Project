@@ -1,13 +1,10 @@
 import MySQLdb
 import json
 
-from connection import connect_db
+from connection import connect_db, item
 from flask import request
 from flask_restful import Resource
 from ldap3 import *
-
-
-
 
 class User(Resource):
 
@@ -17,6 +14,7 @@ class User(Resource):
         username = jdata['username']
         pswd = jdata['password']
         
+
         if (username == "admin" and pswd =="admin"):
             return {"login":"success", 
                     "name":"ASHWINI KUMARI",

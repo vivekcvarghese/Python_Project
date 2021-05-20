@@ -1,6 +1,6 @@
 import json
 
-from rd_data import RdData
+from models.rd_data import DataModel
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
 
@@ -12,7 +12,7 @@ class DateFilter(Resource):
         dates = jdata['date']
         pivot_date = jdata['pivotdate']
 
-        opData = RdData(dates, pivot_date)
+        opData = DataModel.RdData(self, dates, pivot_date)
         opData = json.dumps(opData, indent = 4)   
 
         return opData

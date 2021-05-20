@@ -4,7 +4,7 @@ import datetime
 from connection import connect_db
 from flask import request
 from flask_restful import Resource
-from fetch_emp_status import fetchStatus
+from resources.fetch_emp_status import fetchStatus
 
 class EmpRprtDate(Resource):
 
