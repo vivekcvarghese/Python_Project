@@ -6,7 +6,7 @@ import math
 from connection import connect_db
 from flask import request
 from flask_restful import Resource
-from resources.fetch_emp_status import fetchStatus
+from models.fetch_emp_status import EmployeeRprtModel
 
 
 class EmployeeReport(Resource):
@@ -70,7 +70,7 @@ class EmployeeReport(Resource):
     
     def get(self):
 
-        return fetchStatus(0)
+        return EmployeeRprtModel.fetchStatus(0)
 
      
         

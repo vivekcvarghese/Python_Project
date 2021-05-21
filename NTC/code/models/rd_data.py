@@ -25,7 +25,8 @@ class DataModel(db.Model):
                 db.session.add(self)
                 db.session.commit()   
 
-        def RdData(self, filters = [], dates = "", time = ""):
+        @classmethod
+        def RdData(cls, filters = [], dates = ""):
                 date_conditions = []
                 sla_conditions = []
                 

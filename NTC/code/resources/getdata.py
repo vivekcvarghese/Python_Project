@@ -4,7 +4,6 @@ import xlrd
 import json
 
 import datetime
-from connection import connect_db
 from models.rd_data import DataModel
 from tablib import Dataset
 from flask import Flask, request, jsonify
@@ -14,7 +13,7 @@ class GetData(Resource):
 
     def get(self):
       
-        opData = DataModel.RdData(self)
+        opData = DataModel.RdData()
         opData = json.dumps(opData, indent = 4)   
         return opData
 

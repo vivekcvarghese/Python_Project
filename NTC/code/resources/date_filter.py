@@ -12,7 +12,7 @@ class DateFilter(Resource):
         dates = jdata['date']
         pivot_date = jdata['pivotdate']
 
-        opData = DataModel.RdData(self, dates, pivot_date)
+        opData = DataModel.RdData(dates, pivot_date)
         opData = json.dumps(opData, indent = 4)   
 
         return opData
