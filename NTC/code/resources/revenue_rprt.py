@@ -1,8 +1,11 @@
 import json
+
 from datetime import date, timedelta, datetime
 from time import strptime
-
-from connection import connect_db
+from db import db
+from sqlalchemy import func
+from models.fetch_emp_status import EmployeeRprtModel
+from models.employee import EmployeeModel
 from flask import request
 from flask_restful import Resource
 
@@ -17,47 +20,45 @@ class RevenueRprt(Resource):
         dt = dt.split('-')
         month = dt[1]
         year = dt[0]
+        select_item = []
 
         if sheet_name == "Revenue":
-            x = "SUM(revenue)"
+            select_item.append(func.sum(EmployeeRprtModel.Revenue))
+       
         elif sheet_name == "Productivity":
-            x = "SUM(TargetTime)"
+            select_item.append(func.sum(EmployeeRprtModel.TargetTime))
+    
         elif sheet_name == "Utilization":
-            x = "SUM(totalTime)"
+            select_item.append(func.sum(EmployeeRprtModel.totalTime))
+            
         elif sheet_name == "Orders":
-            x = "COUNT(order_number)"
+            select_item.append(func.count(EmployeeRprtModel.order_number))
 
-        cursor, database = connect_db()
-        query = "SELECT * FROM employee"
-        cursor.execute(query)
-        res = cursor.fetchall()
-
+        res = EmployeeModel.getAllEmployees()
         flag = None
         final_array = []
         for i in res:
             final = {}
-            query = "SELECT {}, date_dt FROM emp_report WHERE month(date_dt) = '{}' AND account_name = '{}' AND year(date_dt) = '{}' GROUP BY date_dt".format(x, month, i[1], year)
-            cursor.execute(query)
-            result = cursor.fetchall()
 
-            final["emp_code"] = i[1]
-            final["name"] = i[2]
-            if i[3] == None:
+            result = db.session.query(*select_item, EmployeeRprtModel.date_dt)\
+                .filter(func.month(EmployeeRprtModel.date_dt) == month, func.year(EmployeeRprtModel.date_dt) == year,\
+                EmployeeRprtModel.account_name == i.empcode).group_by(EmployeeRprtModel.date_dt).all()
+
+            final["emp_code"] = i.empcode
+            final["name"] = i.name
+            if i.doj == None:
                 final["doj"] = "NA"
             else:
-                final["doj"] = i[3].strftime("%d-%m-%Y")
-            final["search"] = i[4]
-            final["client"] = i[5]
-            final["task"] = i[6]
+                final["doj"] = i.doj.strftime("%d-%m-%Y")
+            final["search"] = i.search
+            final["client"] = i.client
+            final["task"] = i.TASK
             total = 0
             for j in result:
                 final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))
                 total += j[0]
             final["total"] = float(round(total, 2))
             final_array.append(final)
-
-        cursor.close()
-        database.close()
 
         m = int(month)
         y = int(year)

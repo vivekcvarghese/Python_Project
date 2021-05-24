@@ -1,8 +1,10 @@
 import json
+
 from datetime import date, timedelta, datetime
 from time import strptime
-
-from connection import connect_db
+from db import db
+from sqlalchemy import func
+from models.fetch_emp_status import EmployeeRprtModel
 from flask import request
 from flask_restful import Resource
 
@@ -17,19 +19,15 @@ class ClientRprt(Resource):
         month = dt[1]
         year = dt[0]
 
-        cursor, database = connect_db()
-        query = "SELECT DISTINCT(client) FROM emp_report WHERE month(date_dt) = '{}' AND year(date_dt) = '{}' ".format(month, year)
-        cursor.execute(query)
-        result = cursor.fetchall()
+        result = db.session.query(func.distinct(EmployeeRprtModel.client)).filter(func.year(EmployeeRprtModel.date_dt) == year, func.month(EmployeeRprtModel.date_dt) == month).all()
         final_array = [] 
-
         for i in result:
             final = {}
             if i[0] != None and i[0] != 'NonProd':
-                query = "SELECT SUM(revenue), date_dt FROM emp_report WHERE month(date_dt) = '{}' AND year(date_dt) = '{}' AND client = '{}' GROUP BY date_dt".format(month, year, i[0])
-                cursor.execute(query)
-                res = cursor.fetchall()
-
+                res = db.session.query(func.sum(EmployeeRprtModel.Revenue), EmployeeRprtModel.date_dt)\
+                    .filter(func.year(EmployeeRprtModel.date_dt) == year, func.month(EmployeeRprtModel.date_dt) == month,\
+                    EmployeeRprtModel.client == i[0]).group_by(EmployeeRprtModel.date_dt).all()
+            
                 final['client'] = i[0]
                 total = 0
                 for j in res:
@@ -38,10 +36,7 @@ class ClientRprt(Resource):
                 if total != 0:
                     final['total'] = float(round(total, 2))
                     final_array.append(final)
-
-        cursor.close()
-        database.close()
-
+                    
         m = int(month)
         y = int(year)
         if m == 12:

@@ -1,5 +1,5 @@
 import json
-import datetime
+from datetime import datetime
 
 from sqlalchemy import func
 from db import db
@@ -23,7 +23,7 @@ class EmployeeRprtModel(db.Model):
     TargetTime=db.Column(db.Float)
     DayWiseBand=db.Column(db.Float)
     Revenue=db.Column(db.Float)
-    created_date=db.Column(db.DateTime)
+    created_date=db.Column(db.DateTime, default = datetime.now())
 
     def __init__(self,username,account_name,date_dt,order_number,client,task,process,state,startTime,endTime,totalTime,status,TargetTime,DayWiseBand,Revenue):
                 self.username = username
@@ -41,7 +41,25 @@ class EmployeeRprtModel(db.Model):
                 self.TargetTime = TargetTime
                 self.DayWiseBand = DayWiseBand
                 self.Revenue = Revenue
-                
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def getDWB(cls,account_name,date):
+
+        condition = [EmployeeRprtModel.account_name == account_name, EmployeeRprtModel.date_dt == date, EmployeeRprtModel.status == 'Completed/Submitted']
+        result = db.session.query(func.sum(EmployeeRprtModel.TargetTime)).filter(*condition).first()
+        
+        if result[0] != None:
+            dwb = (result[0]/1)*100
+            dwb = round(dwb,1)
+        else:
+            dwb = 0
+
+        db.session.query(EmployeeRprtModel).filter(*condition).update({EmployeeRprtModel.DayWiseBand : dwb})
+        db.session.commit()
 
     @classmethod
     def fetchStatus(cls,date):
@@ -59,7 +77,7 @@ class EmployeeRprtModel(db.Model):
         for i in res:
             final = {}
             result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, *date_condition).first()
-        
+
             final["emp_code"] = i.empcode
             final["name"] = i.name
             if i.doj == None:
@@ -72,7 +90,6 @@ class EmployeeRprtModel(db.Model):
             
             if result[0] != 0:
                 flag = 1
-                print(result)
                 final["order_count"] = result[0]
                 final["productivity"] = float(round(result[1],1)) 
                 final["utilization"] = float(round(result[2],2))
@@ -93,6 +110,19 @@ class EmployeeRprtModel(db.Model):
 
         return output
 
+    @classmethod
+    def myStatus(cls,date,account_name):
+        date_condition = []
+        if(date == ''):
+            date_condition.append(EmployeeRprtModel.date_dt == func.current_date())
+        else:
+            date_condition.append(EmployeeRprtModel.date_dt == date)
+    
+        res = db.session.query(EmployeeRprtModel).filter(EmployeeRprtModel.account_name == account_name, *date_condition).all()
+        return res
 
+    @classmethod
+    def singleStatus(cls, eid):
 
+        return db.session.query(EmployeeRprtModel).filter(EmployeeRprtModel.id == eid).first()
 

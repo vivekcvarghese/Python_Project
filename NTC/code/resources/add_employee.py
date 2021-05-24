@@ -1,7 +1,7 @@
 import json
 import datetime
 
-from connection import connect_db
+from models.employee import EmployeeModel
 from flask import request
 from flask_restful import Resource
 
@@ -43,48 +43,24 @@ class AddEmployee(Resource):
         data = jdata['inputs']
         try:
             if data["id"] == "":
-                AddEmployee.insert(data)
+                emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], data['task'])
             else:
-                AddEmployee.update(data)
+                emp = EmployeeModel.getSingleEmployee(data["id"])[0]
+                emp.empcode = data['empcode']
+                emp.name = data['name']
+                emp.doj = data['doj']
+                emp.search = data['search']
+                emp.client = data['client']
+                emp.task = data['task']
+            emp.insert()
         except:
             return {"response":"Failed"}
 
         return {"response":"Success"}
     def get(self):
 
-        query = "SELECT * FROM employee ORDER BY name"
-
-        return getEmployeeDetails(query)
-        
-    @classmethod
-    def insert(cls, data):
-        cursor, database = connect_db()
-        query = """INSERT INTO employee (empcode, name, doj, search, client, TASK) 
-                VALUES (%s, %s, %s, %s, %s, %s)"""
-        values = (data['empcode'], data['name'], data['doj'], data['search'], data['client'],
-        data['task'])
-        cursor.execute(query, values)
-       
-        cursor.close()
-        database.commit()
-        database.close()
-        return
-
-    @classmethod
-    def update(cls, data):
-        cursor, database = connect_db()
-      
-        query = """UPDATE employee SET empcode = %s, name = %s, doj = %s, search = %s, 
-                client = %s, TASK = %s WHERE id = {}""".format(data["id"])
-        values = (data['empcode'], data['name'], data['doj'], data['search'], data['client'],
-        data['task'])
-        
-        cursor.execute(query, values)
-    
-        cursor.close()
-        database.commit()
-        database.close()
-        return
+        res = EmployeeModel.getAllEmployees()
+        return EmployeeModel.setOutputFormat(res)
 
 class EditEmployee(Resource):
 
@@ -102,5 +78,5 @@ class EditEmployee(Resource):
 
     def get(self, empid):
 
-        query = "SELECT * FROM employee WHERE id = {}".format(empid)
-        return getEmployeeDetails(query)
+        res = EmployeeModel.getSingleEmployee(empid)
+        return EmployeeModel.setOutputFormat(res)
