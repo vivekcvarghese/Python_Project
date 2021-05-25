@@ -20,6 +20,13 @@ class EmployeeModel(db.Model):
         self.client = client
         self.TASK = TASK
     
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
     @classmethod
     def getAllEmployees(cls):
@@ -52,7 +59,5 @@ class EmployeeModel(db.Model):
         output = json.dumps(output, indent = 4)   
         return output
 
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
+    
        

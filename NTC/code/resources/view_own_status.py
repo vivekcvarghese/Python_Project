@@ -1,13 +1,12 @@
 import json
 import datetime 
 
-from models.fetch_emp_status import EmployeeRprtModel
+from models.report_table import EmployeeRprtModel
 from flask import request
 from flask_restful import Resource
 
 
 class ViewOwnStatus(Resource):
-
 
     def post(self):
 

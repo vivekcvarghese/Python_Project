@@ -4,7 +4,7 @@ from datetime import date, timedelta, datetime
 from time import strptime
 from db import db
 from sqlalchemy import func
-from models.fetch_emp_status import EmployeeRprtModel
+from models.report_table import EmployeeRprtModel
 from flask import request
 from flask_restful import Resource
 

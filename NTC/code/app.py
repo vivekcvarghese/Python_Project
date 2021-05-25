@@ -8,7 +8,7 @@ from resources.date_filter import DateFilter
 from resources.employee_report import EmployeeReport
 from resources.emp_rprt_date import EmpRprtDate
 from resources.view_own_status import ViewOwnStatus
-from resources.revenue_rprt import RevenueRprt
+from resources.monthly_rprt import RevenueRprt
 from resources.clientwise_rprt import ClientRprt
 from resources.task_dropdown import DropDown
 from resources.fetch_single_status import FetchSingleStatus

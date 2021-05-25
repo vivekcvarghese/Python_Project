@@ -1,10 +1,9 @@
 import json
 import datetime
 
-from connection import connect_db
 from flask import request
 from flask_restful import Resource
-from models.fetch_emp_status import EmployeeRprtModel
+from models.report_table import EmployeeRprtModel
 
 class EmpRprtDate(Resource):
 

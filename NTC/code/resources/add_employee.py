@@ -5,37 +5,7 @@ from models.employee import EmployeeModel
 from flask import request
 from flask_restful import Resource
 
-def getEmployeeDetails(query):
-
-        cursor, database = connect_db()
-        cursor.execute(query)
-        result = cursor.fetchall()
-
-        output = []
-        for i in result:
-            op = {}
-            op["empcode"] = i[1]
-            op["name"] = i[2]
-            if i[3] == None:
-                op["doj"] = "NA"
-            else:
-                op["doj"] = i[3].strftime("%Y-%m-%d")
-            op["search"] = i[4]
-            op["client"] = i[5]
-            op["task"] = i[6]
-            op["id"] = i[0]
-
-            output.append(op)
-        
-        cursor.close()
-        database.close()
-    
-        output = json.dumps(output, indent = 4)   
-        return output
-
-
 class AddEmployee(Resource):
-
 
     def post(self):
 
@@ -51,7 +21,7 @@ class AddEmployee(Resource):
                 emp.doj = data['doj']
                 emp.search = data['search']
                 emp.client = data['client']
-                emp.task = data['task']
+                emp.TASK = data['task']
             emp.insert()
         except:
             return {"response":"Failed"}
@@ -65,15 +35,8 @@ class AddEmployee(Resource):
 class EditEmployee(Resource):
 
     def delete(self, empid):
-        cursor, database = connect_db()
-
-        query = "DELETE FROM employee WHERE id = {}".format(empid)
-        cursor.execute(query)
-
-        cursor.close()
-        database.commit()
-        database.close()
-
+        emp = EmployeeModel.getSingleEmployee(empid)[0]
+        emp.delete()
         return
 
     def get(self, empid):

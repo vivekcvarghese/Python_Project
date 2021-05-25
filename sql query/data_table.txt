@@ -5,5 +5,4 @@ State VARCHAR(100),
 Task_Name VARCHAR(100) NOT NULL,
 Task_Status VARCHAR(100),
 SLAExpiration DATE,
-processed BOOLEAN,
 created_date DATETIME NOT NULL)

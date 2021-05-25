@@ -4,7 +4,7 @@ import math
 
 from flask import request
 from flask_restful import Resource
-from models.fetch_emp_status import EmployeeRprtModel
+from models.report_table import EmployeeRprtModel
 from models.target_table import TargetModel
 
 class EmployeeReport(Resource):
@@ -34,16 +34,16 @@ class EmployeeReport(Resource):
             emp = EmployeeRprtModel.singleStatus(data['id'])
             emp.order_number = data['orderNumber']
             emp.date_dt = data['date']
-            emp.Client = data['Client']
-            emp.Task = data['Task']
-            emp.Process = data['Process']
+            emp.client = data['Client']
+            emp.task = data['Task']
+            emp.process = data['Process']
             emp.state = data['state']
             emp.startTime = data['startTime']
             emp.endTime = data['endTime']
             emp.totalTime = data['totalTime']
             emp.status = data['status']
             emp.TargetTime = target_time
-            emp.revenue = price
+            emp.Revenue = price
             emp.DayWiseBand = 0
 
         emp.save_to_db()
