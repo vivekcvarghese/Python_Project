@@ -1,5 +1,5 @@
 from db import db
-from sqlalchemy import func
+from sqlalchemy import func, desc
 
 class DataModel(db.Model):
         __tablename__="data"
@@ -44,7 +44,7 @@ class DataModel(db.Model):
                 result = db.session.query(func.distinct(DataModel.Task_Name)).filter(DataModel.Task_Status == 'Available', *date_conditions, *sla_conditions).order_by(DataModel.Task_Name).all()
         
 
-                query = db.session.query(func.distinct(func.time(DataModel.created_date))).filter(func.DATE(DataModel.created_date) == dates).order_by(DataModel.created_date.desc()).all()
+                query = db.session.query(func.distinct(func.time(DataModel.created_date))).filter(func.DATE(DataModel.created_date) == dates).order_by(desc(DataModel.created_date)).all()
                 for i in query:
                         time.append(str(i[0]))
                 tasks = []
