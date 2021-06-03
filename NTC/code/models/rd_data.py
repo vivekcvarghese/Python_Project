@@ -28,6 +28,8 @@ class DataModel(db.Model):
         @classmethod
         def RdData(cls, filters = [], dates = ""):
                 date_conditions = []
+                getTimelist = []
+                time = []
                 sla_conditions = []
                 
                 if dates == "":
@@ -41,6 +43,10 @@ class DataModel(db.Model):
 
                 result = db.session.query(func.distinct(DataModel.Task_Name)).filter(DataModel.Task_Status == 'Available', *date_conditions, *sla_conditions).order_by(DataModel.Task_Name).all()
         
+
+                query = db.session.query(func.distinct(func.time(DataModel.created_date))).filter(func.DATE(DataModel.created_date) == dates).order_by(DataModel.created_date.desc()).all()
+                for i in query:
+                        time.append(str(i[0]))
                 tasks = []
                 output = []
                 dates = []
@@ -66,9 +72,10 @@ class DataModel(db.Model):
 
                         state['Grand_total'] = total_count
                         output.append(state)
-
+                
                 dt = {}
                 dt["SLAExpiration"]  = dates  
+                dt["time"]  = time
                 output.append(dt)
         
                 return output

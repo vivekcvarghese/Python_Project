@@ -1,4 +1,3 @@
-import MySQLdb
 import json
 
 from flask import request
