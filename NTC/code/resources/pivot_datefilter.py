@@ -10,9 +10,10 @@ class PivotDateFilter(Resource):
 
         jdata = request.get_json()
         dates = jdata['pivotDate']
+        time = jdata['time']
         filters = []
 
-        opData = DataModel.RdData(filters,dates)
+        opData = DataModel.RdData(filters,dates,time)
         opData = json.dumps(opData, indent = 4)   
 
         return opData

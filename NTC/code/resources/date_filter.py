@@ -9,10 +9,10 @@ class DateFilter(Resource):
     def post(self):
 
         jdata = request.get_json()
-        dates = jdata['date']
+        slaDates = jdata['date']
         pivot_date = jdata['pivotdate']
-
-        opData = DataModel.RdData(dates, pivot_date)
+        time = jdata['time']
+        opData = DataModel.RdData(slaDates, pivot_date, time)
         opData = json.dumps(opData, indent = 4)   
 
         return opData

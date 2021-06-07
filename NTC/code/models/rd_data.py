@@ -26,17 +26,20 @@ class DataModel(db.Model):
                 db.session.commit()   
 
         @classmethod
-        def RdData(cls, filters = [], dates = ""):
+        def RdData(cls, filters = [], dates = "", time_filter = ""):
                 date_conditions = []
                 getTimelist = []
                 time = []
                 sla_conditions = []
-                
-                if dates == "":
-                        date_conditions.append(DataModel.created_date == (db.session.query(func.max(DataModel.created_date))))
-                        date_conditions.append(func.DATE(DataModel.created_date) == func.current_date())                
+                print(time_filter,"   time")
+                print(dates,"   date")
+                print(filters,"   slafilter")
+
+                if time_filter == "":
+                        date_conditions.append(DataModel.created_date == (db.session.query(func.max(DataModel.created_date)).filter(func.DATE(DataModel.created_date) == dates)))                
                 else:
-                        date_conditions.append(DataModel.created_date == (db.session.query(func.max(DataModel.created_date)).filter(func.DATE(DataModel.created_date) == dates)))
+                        date_conditions.append(func.DATE(DataModel.created_date) == dates)
+                        date_conditions.append(func.TIME(DataModel.created_date) == time_filter)
 
                 if len(filters) != 0:
                         sla_conditions.append(DataModel.SLAExpiration.in_(filters))
@@ -62,7 +65,6 @@ class DataModel(db.Model):
 
                 for i in tasks:
                         result = db.session.query(DataModel.State, func.count(DataModel.State)).filter(DataModel.Task_Name == i, DataModel.Task_Status == 'Available', *date_conditions, *sla_conditions).group_by(DataModel.State).order_by(DataModel.State).all()
-                        
                         state = {}
                         state["Task_Name"] = i
                         total_count = 0
@@ -75,7 +77,10 @@ class DataModel(db.Model):
                 
                 dt = {}
                 dt["SLAExpiration"]  = dates  
-                dt["time"]  = time
                 output.append(dt)
-        
+                dt={}
+                dt["timeArray"]  = time
+                output.append(dt)
+
+                print(output)
                 return output
