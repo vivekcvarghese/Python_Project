@@ -23,15 +23,17 @@ class EmployeeReport(Resource):
         else:
             target_time = 0
             price = 0
-
+        
 
         if data['id'] == "":
 
             emp = EmployeeRprtModel(data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
             data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
             data['status'], target_time, 0, price)
+            emp.save_to_db()
         else:
             emp = EmployeeRprtModel.singleStatus(data['id'])
+            temp = emp.date_dt
             emp.order_number = data['orderNumber']
             emp.date_dt = data['date']
             emp.client = data['Client']
@@ -45,10 +47,11 @@ class EmployeeReport(Resource):
             emp.TargetTime = target_time
             emp.Revenue = price
             emp.DayWiseBand = 0
-
-        emp.save_to_db()
-
-        EmployeeRprtModel.getDWB(data['account_name'], data['date'])
+            emp.save_to_db()
+            if temp != data['date']:
+                EmployeeRprtModel.getDWB(data['account_name'], temp)
+        
+        EmployeeRprtModel.getDWB(data['account_name'], data['date']) 
         return {"status": "submitted"}
     
     def get(self):
