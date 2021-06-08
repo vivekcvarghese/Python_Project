@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from db import db
 from models.employee import EmployeeModel
 
@@ -113,9 +113,9 @@ class EmployeeRprtModel(db.Model):
     @classmethod
     def myStatus(cls,date,end_date, account_name):
         date_condition = []
-        
+
         date_condition.append(EmployeeRprtModel.date_dt.between(date, end_date))
-        res = db.session.query(EmployeeRprtModel).filter(EmployeeRprtModel.account_name == account_name, *date_condition).order_by(EmployeeRprtModel.date_dt).all()
+        res = db.session.query(EmployeeRprtModel).filter(EmployeeRprtModel.account_name == account_name, *date_condition).order_by(desc(EmployeeRprtModel.date_dt)).all()
         return res
 
     @classmethod
