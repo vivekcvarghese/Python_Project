@@ -111,14 +111,11 @@ class EmployeeRprtModel(db.Model):
         return output
 
     @classmethod
-    def myStatus(cls,date,account_name):
+    def myStatus(cls,date,end_date, account_name):
         date_condition = []
-        if(date == ''):
-            date_condition.append(EmployeeRprtModel.date_dt == func.current_date())
-        else:
-            date_condition.append(EmployeeRprtModel.date_dt == date)
-    
-        res = db.session.query(EmployeeRprtModel).filter(EmployeeRprtModel.account_name == account_name, *date_condition).all()
+        
+        date_condition.append(EmployeeRprtModel.date_dt.between(date, end_date))
+        res = db.session.query(EmployeeRprtModel).filter(EmployeeRprtModel.account_name == account_name, *date_condition).order_by(EmployeeRprtModel.date_dt).all()
         return res
 
     @classmethod

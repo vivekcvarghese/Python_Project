@@ -12,9 +12,10 @@ class ViewOwnStatus(Resource):
 
         jdata = request.get_json()
         date = jdata['dateFilter']
+        end_date = jdata['enddateFilter']
         account_name = jdata['account_name']
 
-        result = EmployeeRprtModel.myStatus(date, account_name)
+        result = EmployeeRprtModel.myStatus(date,end_date, account_name)
         
         output = []
         for row in result:
