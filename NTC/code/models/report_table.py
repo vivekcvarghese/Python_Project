@@ -23,9 +23,10 @@ class EmployeeRprtModel(db.Model):
     TargetTime=db.Column(db.Float)
     DayWiseBand=db.Column(db.Float)
     Revenue=db.Column(db.Float)
-    created_date=db.Column(db.DateTime, default = datetime.now())
-
-    def __init__(self,username,account_name,date_dt,order_number,client,task,process,state,startTime,endTime,totalTime,status,TargetTime,DayWiseBand,Revenue):
+    updated_time=db.Column(db.DateTime)
+    created_date=db.Column(db.DateTime)
+    
+    def __init__(self,username,account_name,date_dt,order_number,client,task,process,state,startTime,endTime,totalTime,status,TargetTime,DayWiseBand,Revenue,updated_time,created_date):
                 self.username = username
                 self.account_name = account_name
                 self.date_dt = date_dt
@@ -41,6 +42,8 @@ class EmployeeRprtModel(db.Model):
                 self.TargetTime = TargetTime
                 self.DayWiseBand = DayWiseBand
                 self.Revenue = Revenue
+                self.updated_time = updated_time
+                self.created_date = created_date
 
     def save_to_db(self):
         db.session.add(self)

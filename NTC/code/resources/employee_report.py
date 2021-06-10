@@ -29,7 +29,7 @@ class EmployeeReport(Resource):
 
             emp = EmployeeRprtModel(data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
             data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
-            data['status'], target_time, 0, price)
+            data['status'], target_time, 0, price, datetime.datetime.now(),datetime.datetime.now())
             emp.save_to_db()
         else:
             emp = EmployeeRprtModel.singleStatus(data['id'])
@@ -47,6 +47,7 @@ class EmployeeReport(Resource):
             emp.TargetTime = target_time
             emp.Revenue = price
             emp.DayWiseBand = 0
+            emp.updated_time = datetime.datetime.now()
             emp.save_to_db()
             if temp != data['date']:
                 EmployeeRprtModel.getDWB(data['account_name'], temp)
