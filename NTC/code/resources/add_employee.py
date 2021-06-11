@@ -1,5 +1,5 @@
 import json
-import datetime
+from datetime import datetime
 
 from models.employee import EmployeeModel
 from flask import request
@@ -13,7 +13,7 @@ class AddEmployee(Resource):
         data = jdata['inputs']
         try:
             if data["id"] == "":
-                emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], data['task'])
+                emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], data['task'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
             else:
                 emp = EmployeeModel.getSingleEmployee(data["id"])[0]
                 emp.empcode = data['empcode']
@@ -22,6 +22,8 @@ class AddEmployee(Resource):
                 emp.search = data['search']
                 emp.client = data['client']
                 emp.TASK = data['task']
+                emp.updated_on = datetime.now()
+                emp.updated_by = data['username']
             emp.insert()
         except:
             return {"response":"Failed"}
@@ -34,9 +36,15 @@ class AddEmployee(Resource):
 
 class EditEmployee(Resource):
 
-    def delete(self, empid):
+    def post(self,empid):
+        jdata = request.get_json()
+        user = jdata['username']
+
         emp = EmployeeModel.getSingleEmployee(empid)[0]
-        emp.delete()
+        emp.deleted = 1
+        emp.updated_on = datetime.now()
+        emp.updated_by = user
+        emp.insert()
         return
 
     def get(self, empid):

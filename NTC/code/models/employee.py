@@ -3,7 +3,7 @@ import json
 import datetime
 
 class EmployeeModel(db.Model):
-    __tablename__="employee"
+    __tablename__="employee_details"
     id=db.Column(db.Integer,primary_key=True)
     empcode =db.Column(db.String(100))
     name=db.Column(db.String(100))
@@ -11,15 +11,25 @@ class EmployeeModel(db.Model):
     search=db.Column(db.String(100))
     client=db.Column(db.String(100))
     TASK=db.Column(db.String(100))
+    created_on=db.Column(db.DateTime)
+    created_by=db.Column(db.String(100))
+    updated_on=db.Column(db.DateTime)
+    updated_by=db.Column(db.String(100))
+    deleted=db.Column(db.Boolean, default=False)
 
-    def __init__(self,empcode,name,doj,search,client,TASK):
+    def __init__(self,empcode,name,doj,search,client,TASK,created_on,created_by,updated_on,updated_by,deleted):
         self.empcode = empcode
         self.name = name
         self.doj = doj
         self.search = search
         self.client = client
         self.TASK = TASK
-    
+        self.created_on = created_on
+        self.created_by = created_by
+        self.updated_on = updated_on
+        self.updated_by = updated_by
+        self.deleted = deleted
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -30,7 +40,7 @@ class EmployeeModel(db.Model):
 
     @classmethod
     def getAllEmployees(cls):
-        return db.session.query(EmployeeModel).all() 
+        return db.session.query(EmployeeModel).filter(EmployeeModel.deleted == 0).all() 
 
     @classmethod
     def getSingleEmployee(cls, empid):
