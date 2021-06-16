@@ -81,7 +81,7 @@ class EmployeeRprtModel(db.Model):
             final = {}
             result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, *date_condition).first()
 
-            final["emp_code"] = i.empcode
+            final["empcode"] = i.empcode
             final["name"] = i.name
             if i.doj == None:
                 final["doj"] = "NA"

@@ -44,7 +44,7 @@ class RevenueRprt(Resource):
                 .filter(func.month(EmployeeRprtModel.date_dt) == month, func.year(EmployeeRprtModel.date_dt) == year,\
                 EmployeeRprtModel.account_name == i.empcode).group_by(EmployeeRprtModel.date_dt).all()
 
-            final["emp_code"] = i.empcode
+            final["empcode"] = i.empcode
             final["name"] = i.name
             if i.doj == None:
                 final["doj"] = "NA"
