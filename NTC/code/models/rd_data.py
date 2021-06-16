@@ -31,9 +31,6 @@ class DataModel(db.Model):
                 getTimelist = []
                 time = []
                 sla_conditions = []
-                print(time_filter,"   time")
-                print(dates,"   date")
-                print(filters,"   slafilter")
 
                 if time_filter == "":
                         date_conditions.append(DataModel.created_date == (db.session.query(func.max(DataModel.created_date)).filter(func.DATE(DataModel.created_date) == dates)))                
@@ -47,9 +44,10 @@ class DataModel(db.Model):
                 result = db.session.query(func.distinct(DataModel.Task_Name)).filter(DataModel.Task_Status == 'Available', *date_conditions, *sla_conditions).order_by(DataModel.Task_Name).all()
         
 
-                query = db.session.query(func.distinct(func.time(DataModel.created_date))).filter(func.DATE(DataModel.created_date) == dates).order_by(desc(DataModel.created_date)).all()
+                query = db.session.query(func.distinct(DataModel.created_date)).filter(func.DATE(DataModel.created_date) == dates).order_by(desc(DataModel.created_date)).all()
                 for i in query:
-                        time.append(str(i[0]))
+                        x = str(i[0]).split(' ')[1]
+                        time.append(x)
                 tasks = []
                 output = []
                 dates = []
@@ -82,5 +80,4 @@ class DataModel(db.Model):
                 dt["timeArray"]  = time
                 output.append(dt)
 
-                print(output)
                 return output
