@@ -82,22 +82,22 @@ class EmployeeModel(db.Model):
                 final["task"] = i[0].TASK
             else:
                 final["task"] = i[0].TASK.split(",")
-                
+
             final["shift"] = i[0].shift
-            final["productionStatus"] = i[0].production_status
-            final["trainingDuration"] = i[0].training_duration
+            final["production_status"] = i[0].production_status
+            final["training_duration"] = i[0].training_duration
             if i[0].PORD == None:
-                final["plannedOutOfReviewDate"] = "NA"
+                final["planned_out_of_review_date"] = "NA"
             else:
-                final["plannedOutOfReviewDate"] = i[0].PORD.strftime("%Y-%m-%d")
+                final["planned_out_of_review_date"] = i[0].PORD.strftime("%Y-%m-%d")
 
             if i[0].AORD == None:
-                final["actualOutOfReviewDate"] = "NA"
+                final["actual_out_of_review_date"] = "NA"
             else:
-                final["actualOutOfReviewDate"] = i[0].AORD.strftime("%Y-%m-%d")
+                final["actual_out_of_review_date"] = i[0].AORD.strftime("%Y-%m-%d")
 
-            final["delayReason"] = i[0].delay_reason
-            final["delayReviewDuration"] = i[0].delay_duration
+            final["delay_reason"] = i[0].delay_reason
+            final["delay_review_duration"] = i[0].delay_duration
             final["id"] = i[0].id
 
             output.append(final)
