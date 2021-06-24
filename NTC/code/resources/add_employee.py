@@ -13,7 +13,10 @@ class AddEmployee(Resource):
         data = jdata['inputs']
         try:
             if data["id"] == "":
-                emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], data['task'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
+
+                emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], ",".join(data['task']),
+                    data['shift'],data['productionStatus'],data['trainingDuration'], data['plannedOutOfReviewDate'], data['actualOutOfReviewDate'],
+                    data['delayReason'], data['delayReviewDuration'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
             else:
                 emp = EmployeeModel.getSingleEmployee(data["id"])[0]
                 emp.empcode = data['empcode']
@@ -32,7 +35,7 @@ class AddEmployee(Resource):
     def get(self):
 
         res = EmployeeModel.getAllEmployees()
-        return EmployeeModel.setOutputFormat(res)
+        return EmployeeModel.setOutputFormat(res,2)
 
 class EditEmployee(Resource):
 
@@ -50,4 +53,4 @@ class EditEmployee(Resource):
     def get(self, empid):
 
         res = EmployeeModel.getSingleEmployee(empid)
-        return EmployeeModel.setOutputFormat(res)
+        return EmployeeModel.setOutputFormat(res,1)

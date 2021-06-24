@@ -29,7 +29,7 @@ class ViewOwnStatus(Resource):
             op["start_Time"] = str(row.startTime)
             op["end_Time"] = str(row.endTime)
             op["status"] = row.status
-            op["updated_time"] = str(row.updated_time)
+            op["last_updated_time"] = str(row.updated_time)
             op["id"] = row.id
             output.append(op)
         
