@@ -1,5 +1,6 @@
 from db import db
 from sqlalchemy import func
+from sqlalchemy.sql import alias,select
 
 import json
 import datetime
@@ -57,11 +58,15 @@ class EmployeeModel(db.Model):
 
     @classmethod
     def getAllEmployees(cls):
-        return db.session.query(EmployeeModel,func.max(EmployeeModel.updated_on)).filter(EmployeeModel.deleted == 0).group_by(EmployeeModel.empcode).all() 
+        st = EmployeeModel.__dict__['__table__'].alias("u")
+        return db.session.query(st).filter(st.c.deleted == 0, st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\
+        .filter(EmployeeModel.empcode==st.c.empcode))).all() 
 
     @classmethod
     def getSingleEmployee(cls, empid):
-        return db.session.query(EmployeeModel,func.max(EmployeeModel.updated_on)).filter(EmployeeModel.id == empid).all()
+        st = EmployeeModel.__dict__['__table__'].alias("u")
+        return db.session.query(st).filter(st.c.empcode == empid, st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\
+        .filter(EmployeeModel.empcode==st.c.empcode))).all()
 
     @classmethod
     def setOutputFormat(cls, data,temp):
@@ -69,36 +74,36 @@ class EmployeeModel(db.Model):
         output = []
         for i in data:
             final = {}
-            final["empcode"] = i[0].empcode
-            final["name"] = i[0].name
-            if i[0].doj == None:
+            final["empcode"] = i.empcode
+            final["name"] = i.name
+            if i.doj == None:
                 final["doj"] = "NA"
             else:
-                final["doj"] = i[0].doj.strftime("%Y-%m-%d")
-            final["search"] = i[0].search
-            final["client"] = i[0].client
+                final["doj"] = i.doj.strftime("%Y-%m-%d")
+            final["search"] = i.search
+            final["client"] = i.client
             
             if temp == 2:
-                final["task"] = i[0].TASK
+                final["task"] = i.TASK
             else:
-                final["task"] = i[0].TASK.split(",")
+                final["task"] = i.TASK.split(",")
 
-            final["shift"] = i[0].shift
-            final["production_status"] = i[0].production_status
-            final["training_duration"] = i[0].training_duration
-            if i[0].PORD == None:
+            final["shift"] = i.shift
+            final["production_status"] = i.production_status
+            final["training_duration"] = i.training_duration
+            if i.PORD == None:
                 final["planned_out_of_review_date"] = "NA"
             else:
-                final["planned_out_of_review_date"] = i[0].PORD.strftime("%Y-%m-%d")
+                final["planned_out_of_review_date"] = i.PORD.strftime("%Y-%m-%d")
 
-            if i[0].AORD == None:
+            if i.AORD == None:
                 final["actual_out_of_review_date"] = "NA"
             else:
-                final["actual_out_of_review_date"] = i[0].AORD.strftime("%Y-%m-%d")
+                final["actual_out_of_review_date"] = i.AORD.strftime("%Y-%m-%d")
 
-            final["delay_reason"] = i[0].delay_reason
-            final["delay_review_duration"] = i[0].delay_duration
-            final["id"] = i[0].id
+            final["delay_reason"] = i.delay_reason
+            final["delay_review_duration"] = i.delay_duration
+            final["id"] = i.id
 
             output.append(final)
             # print(output)

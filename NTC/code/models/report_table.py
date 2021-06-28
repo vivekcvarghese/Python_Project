@@ -79,17 +79,17 @@ class EmployeeRprtModel(db.Model):
         final_array = []
         for i in res:
             final = {}
-            result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i[0].empcode, *date_condition).first()
+            result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, *date_condition).first()
 
-            final["empcode"] = i[0].empcode
-            final["name"] = i[0].name
-            if i[0].doj == None:
+            final["empcode"] = i.empcode
+            final["name"] = i.name
+            if i.doj == None:
                 final["doj"] = "NA"
             else:
-                final["doj"] = i[0].doj.strftime("%d-%m-%Y")
-            final["search"] = i[0].search
-            final["client"] = i[0].client
-            final["task"] = i[0].TASK
+                final["doj"] = i.doj.strftime("%d-%m-%Y")
+            final["search"] = i.search
+            final["client"] = i.client
+            final["task"] = i.TASK
             
             if result[0] != 0:
                 flag = 1

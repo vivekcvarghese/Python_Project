@@ -42,17 +42,17 @@ class RevenueRprt(Resource):
 
             result = db.session.query(*select_item, EmployeeRprtModel.date_dt)\
                 .filter(func.month(EmployeeRprtModel.date_dt) == month, func.year(EmployeeRprtModel.date_dt) == year,\
-                EmployeeRprtModel.account_name == i[0].empcode).group_by(EmployeeRprtModel.date_dt).all()
+                EmployeeRprtModel.account_name == i.empcode).group_by(EmployeeRprtModel.date_dt).all()
 
-            final["empcode"] = i[0].empcode
-            final["name"] = i[0].name
-            if i[0].doj == None:
+            final["empcode"] = i.empcode
+            final["name"] = i.name
+            if i.doj == None:
                 final["doj"] = "NA"
             else:
-                final["doj"] = i[0].doj.strftime("%d-%m-%Y")
-            final["search"] = i[0].search
-            final["client"] = i[0].client
-            final["task"] = i[0].TASK
+                final["doj"] = i.doj.strftime("%d-%m-%Y")
+            final["search"] = i.search
+            final["client"] = i.client
+            final["task"] = i.TASK
             total = 0
             for j in result:
                 final[j[1].strftime("%Y-%m-%d")] = float(round(j[0], 2))

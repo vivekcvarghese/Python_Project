@@ -12,21 +12,10 @@ class AddEmployee(Resource):
         jdata = request.get_json()
         data = jdata['inputs']
         try:
-            if data["id"] == "":
 
-                emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], ",".join(data['task']),
-                    data['shift'],data['production_status'],data['training_duration'], data['planned_out_of_review_date'], data['actual_out_of_review_date'],
-                    data['delay_reason'], data['delay_review_duration'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
-            else:
-                emp = EmployeeModel.getSingleEmployee(data["id"])[0]
-                emp.empcode = data['empcode']
-                emp.name = data['name']
-                emp.doj = data['doj']
-                emp.search = data['search']
-                emp.client = data['client']
-                emp.TASK = data['task']
-                emp.updated_on = datetime.now()
-                emp.updated_by = data['username']
+            emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], ",".join(data['task']),
+                data['shift'],data['production_status'],data['training_duration'], data['planned_out_of_review_date'], data['actual_out_of_review_date'],
+                data['delay_reason'], data['delay_review_duration'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
             emp.insert()
         except:
             return {"response":"Failed"}
