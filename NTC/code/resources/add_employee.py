@@ -1,4 +1,5 @@
 import json
+from db import db
 from datetime import datetime
 
 from models.employee import EmployeeModel
@@ -30,13 +31,14 @@ class EditEmployee(Resource):
 
     def post(self,empid):
         jdata = request.get_json()
-        user = jdata['username']
-
-        emp = EmployeeModel.getSingleEmployee(empid)[0]
-        emp.deleted = 1
-        emp.updated_on = datetime.now()
-        emp.updated_by = user
+        data = jdata['inputs']
+        emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], data['task'],
+                data['shift'],data['production_status'],data['training_duration'], data['planned_out_of_review_date'], data['actual_out_of_review_date'],
+                data['delay_reason'], data['delay_review_duration'], datetime.now(), data['username'], datetime.now(), data['username'], 1)
         emp.insert()
+
+        db.session.query(EmployeeModel).filter(EmployeeModel.empcode == data['empcode']).update({EmployeeModel.deleted:1})
+        db.session.commit()
         return
 
     def get(self, empid):

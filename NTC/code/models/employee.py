@@ -70,7 +70,6 @@ class EmployeeModel(db.Model):
 
     @classmethod
     def setOutputFormat(cls, data,temp):
-        print(data)
         output = []
         for i in data:
             final = {}
