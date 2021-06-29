@@ -1,2 +1,4 @@
-CREATE TABLE employee(id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-empcode VARCHAR (100),name VARCHAR (100), doj DATE, search VARCHAR (100),client VARCHAR(100), TASK VARCHAR(100))
+CREATE TABLE employee_details(id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+empcode VARCHAR (100),name VARCHAR (100), doj DATE, search VARCHAR (100),client VARCHAR(100), TASK VARCHAR(100), shift VARCHAR(100), production_status VARCHAR(100),
+training_duration VARCHAR(100), PORD DATE, AORD DATE, delay_reason VARCHAR(100), delay_duration VARCHAR(100),
+ created_on DATETIME, created_by VARCHAR(100), updated_on DATETIME, updated_by VARCHAR(100), deleted BOOLEAN DEFAULT false)
