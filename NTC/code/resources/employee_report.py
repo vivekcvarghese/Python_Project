@@ -56,7 +56,6 @@ class EmployeeReport(Resource):
         return {"status": "submitted"}
     
     def get(self):
-        return EmployeeRprtModel.fetchStatus(0)
+        return EmployeeRprtModel.fetchStatus(0,"","")
 
      
-        

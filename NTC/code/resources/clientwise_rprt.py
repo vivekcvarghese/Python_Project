@@ -54,3 +54,32 @@ class ClientRprt(Resource):
 
         output = json.dumps(output, indent = 4)
         return output
+
+
+
+class YearlyClientRprt(Resource):
+    def post(self):
+
+        jdata = request.get_json()
+        startDate = jdata['startDate']
+        endDate = jdata['endDate']
+
+        result = db.session.query(func.distinct(EmployeeRprtModel.client))\
+                .filter(EmployeeRprtModel.date_dt.between(startDate,endDate)).all()
+
+        final_array = [] 
+        for i in result:
+            final = {}
+            if i[0] != None and i[0] != 'NonProd':
+                res = db.session.query(func.sum(EmployeeRprtModel.Revenue), func.count(EmployeeRprtModel.order_number))\
+                    .filter(EmployeeRprtModel.date_dt.between(startDate,endDate),\
+                    EmployeeRprtModel.client == i[0], EmployeeRprtModel.status == 'Completed/Submitted').one()
+
+                final['client'] = i[0]
+                final["revenue"] = float(round(res[0], 2))
+                final["order_count"] = res[1]
+                final_array.append(final)
+
+        output = json.dumps(final_array, indent = 4)   
+
+        return output

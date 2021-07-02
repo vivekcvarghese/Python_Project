@@ -65,13 +65,16 @@ class EmployeeRprtModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def fetchStatus(cls,date):
+    def fetchStatus(cls,date,startDate,endDate):
         date_condition = []
 
-        if(date == 0):
-            date_condition.append(EmployeeRprtModel.date_dt == func.current_date())
+        if startDate == "" and endDate == "":
+            if(date == 0):
+                date_condition.append(EmployeeRprtModel.date_dt == func.current_date())
+            else:
+                date_condition.append(EmployeeRprtModel.date_dt == date)
         else:
-            date_condition.append(EmployeeRprtModel.date_dt == date)
+            date_condition.append(EmployeeRprtModel.date_dt.between(startDate,endDate))
 
         res = EmployeeModel.getAllEmployees()
 
@@ -79,7 +82,7 @@ class EmployeeRprtModel(db.Model):
         final_array = []
         for i in res:
             final = {}
-            result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, *date_condition).first()
+            result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted', *date_condition).first()
 
             final["empcode"] = i.empcode
             final["name"] = i.name

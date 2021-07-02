@@ -9,7 +9,7 @@ from resources.employee_report import EmployeeReport
 from resources.emp_rprt_date import EmpRprtDate
 from resources.view_own_status import ViewOwnStatus
 from resources.monthly_rprt import RevenueRprt
-from resources.clientwise_rprt import ClientRprt
+from resources.clientwise_rprt import ClientRprt, YearlyClientRprt
 from resources.task_dropdown import DropDown
 from resources.fetch_single_status import FetchSingleStatus
 from resources.pivot_datefilter import PivotDateFilter
@@ -33,6 +33,7 @@ api.add_resource(ViewOwnStatus, '/mystatus')
 api.add_resource(DropDown, '/dropdown')
 api.add_resource(RevenueRprt, '/revenue')
 api.add_resource(ClientRprt, '/clientrprt')
+api.add_resource(YearlyClientRprt, '/yearlyclientrprt')
 api.add_resource(FetchSingleStatus, '/singlestatus')
 api.add_resource(PivotDateFilter, '/pivottables')
 api.add_resource(AddEmployee, '/addemployee')

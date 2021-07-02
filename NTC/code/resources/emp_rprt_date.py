@@ -12,5 +12,10 @@ class EmpRprtDate(Resource):
         jdata = request.get_json()
         date = jdata['dateFilter']
 
-        return EmployeeRprtModel.fetchStatus(date)
+        startDate = jdata['startDate']
+        endDate = jdata['endDate']
+
+        
+
+        return EmployeeRprtModel.fetchStatus(date, startDate, endDate)
 
