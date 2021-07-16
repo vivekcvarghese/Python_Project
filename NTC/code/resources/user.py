@@ -13,20 +13,20 @@ class User(Resource):
         pswd = jdata['password']
         
 
-        if (username == "admin" and pswd =="admin"):
-            return {"login":"success", 
-                    "name":"ASHWINI KUMARI",
-                    "account_name":"ES086", 
-                    "description": "Admin",
-                    "cn":"cn"}
-        elif (username == "employee" and pswd =="employee"):
-            return {"login":"success", 
-                    "name":"KUKUTLA SRAVAN",
-                    "account_name":"ER327", 
-                    "description": "",
-                    "cn":"cn"}
-        else:
-            return {"login":"invalid credentials"}
+        # if (username == "admin" and pswd =="admin"):
+        #     return {"login":"success", 
+        #             "name":"ASHWINI KUMARI",
+        #             "account_name":"ES086", 
+        #             "description": "Admin",
+        #             "cn":"cn"}
+        # elif (username == "employee" and pswd =="employee"):
+        #     return {"login":"success", 
+        #             "name":"KUKUTLA SRAVAN",
+        #             "account_name":"ER327", 
+        #             "description": "",
+        #             "cn":"cn"}
+        # else:
+        #     return {"login":"invalid credentials"}
 
 
         try:
