@@ -17,7 +17,7 @@ from resources.add_employee import AddEmployee, EditEmployee
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root@localhost/ntc"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root@docker_db_1/ntc"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 
 # app.config['PROPAGATE_EXCEPTIONS'] = True
