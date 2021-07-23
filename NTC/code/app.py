@@ -15,6 +15,7 @@ from resources.fetch_single_status import FetchSingleStatus
 from resources.pivot_datefilter import PivotDateFilter
 from resources.add_employee import AddEmployee, EditEmployee
 from flask_cors import CORS
+from db import db
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root@docker_db_1/ntc"
@@ -39,8 +40,8 @@ api.add_resource(PivotDateFilter, '/pivottables')
 api.add_resource(AddEmployee, '/addemployee')
 api.add_resource(EditEmployee, '/editemployee/<string:empid>')
 
-if __name__ == '__main__':
-    from db import db
-    db.init_app(app)
-    app.run(debug=True)  
 
+db.init_app(app)
+if __name__ == '__main__':
+    
+    app.run(host='0.0.0.0')  

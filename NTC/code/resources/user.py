@@ -9,9 +9,9 @@ class User(Resource):
     def post(self):
         
         jdata = request.get_json()
-        username = jdata['username']
+        AccountName = jdata['username']
         pswd = jdata['password']
-        
+        username = "NTCBPOHYD\\"+AccountName
 
         # if (username == "admin" and pswd =="admin"):
         #     return {"login":"success", 
@@ -30,7 +30,8 @@ class User(Resource):
 
 
         try:
-            AccountName = username.split("\\")[1]
+            # AccountName = username.split("\\")[1]
+            
             server = Server('ntcbpohyd.com')
             conn = Connection(server, user=username, password=pswd, auto_bind=True)
             conn.search('dc=ntcbpohyd,dc=com','(&(objectclass=person)(sAMAccountName ='+AccountName+'))', attributes=['displayName', 'description','distinguishedName'])
