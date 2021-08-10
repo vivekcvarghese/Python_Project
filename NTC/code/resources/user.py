@@ -13,7 +13,7 @@ class User(Resource):
         pswd = jdata['password']
         username = "NTCBPOHYD\\"+AccountName
 
-        if (username == "NTC@12345" and pswd =="NTC@12345"):
+        if (AccountName == "NTC@12345" and pswd =="NTC@12345"):
             return {"login":"success", 
                     "name":"PRASHANT CHAND",
                     "account_name":"NTC@12345", 
