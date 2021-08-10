@@ -13,12 +13,12 @@ class User(Resource):
         pswd = jdata['password']
         username = "NTCBPOHYD\\"+AccountName
 
-        # if (username == "admin" and pswd =="admin"):
-        #     return {"login":"success", 
-        #             "name":"ASHWINI KUMARI",
-        #             "account_name":"ES086", 
-        #             "description": "Admin",
-        #             "cn":"cn"}
+        if (username == "NTC@12345" and pswd =="NTC@12345"):
+            return {"login":"success", 
+                    "name":"PRASHANT CHAND",
+                    "account_name":"NTC@12345", 
+                    "description": "Admin",
+                    "cn":"cn"}
         # elif (username == "employee" and pswd =="employee"):
         #     return {"login":"success", 
         #             "name":"KUKUTLA SRAVAN",
