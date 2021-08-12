@@ -2,6 +2,7 @@ import json
 
 from flask import request
 from flask_restful import Resource
+from models.login import LoginModel
 from ldap3 import *
 
 class User(Resource):
@@ -13,12 +14,23 @@ class User(Resource):
         pswd = jdata['password']
         username = "NTCBPOHYD\\"+AccountName
 
-        if (AccountName == "NTC@12345" and pswd =="NTC@12345"):
+        res = LoginModel.getcredentials(AccountName,pswd)
+
+        if res != None:
             return {"login":"success", 
-                    "name":"PRASHANT CHAND",
-                    "account_name":"NTC@12345", 
-                    "description": "Admin",
+                    "name":res.name,
+                    "account_name":res.username, 
+                    "description": res.description,
                     "cn":"cn"}
+
+
+
+        # if (AccountName == "" and pswd ==""):
+        #     return {"login":"success", 
+        #             "name":"PRASHANT CHAND",
+        #             "account_name":"", 
+        #             "description": "Admin",
+        #             "cn":"cn"}
         # elif (username == "employee" and pswd =="employee"):
         #     return {"login":"success", 
         #             "name":"KUKUTLA SRAVAN",
