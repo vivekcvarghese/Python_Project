@@ -42,10 +42,13 @@ class GetData(Resource):
 
             SLAExpiration = FormatDate(SLAExpiration)
 
-            for i in range(len(Order_Number)):
+            # for i in range(len(Order_Number)):
 
-                d = DataModel(Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i], timestampStr)
-                d.save_to_db()       
+            #     d = DataModel(Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i], timestampStr)
+            #     d.save_to_db()
+            objects=[DataModel(Order_Number[i], State[i], Task_Name[i], Task_Status[i], SLAExpiration[i], timestampStr) for i in range(len(Order_Number))]
+            DataModel.save_bulk(objects)
+                   
             return
 
         rvsi = request.files['rvsi'].read()  # In form data, I used "rvsi" as key.

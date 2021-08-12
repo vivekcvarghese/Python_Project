@@ -6,7 +6,7 @@ from flask_restful import Resource
 from models.report_table import EmployeeRprtModel
 
 class EmpRprtDate(Resource):
-
+# Daily and yearly report page for manager
     def post(self):
 
         jdata = request.get_json()

@@ -48,9 +48,15 @@ class EmployeeRprtModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+    
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
     @classmethod
     def getDWB(cls,account_name,date):
+        # Sum of Target Time on that particular Date * 100
 
         condition = [EmployeeRprtModel.account_name == account_name, EmployeeRprtModel.date_dt == date, EmployeeRprtModel.status == 'Completed/Submitted']
         result = db.session.query(func.sum(EmployeeRprtModel.TargetTime)).filter(*condition).first()

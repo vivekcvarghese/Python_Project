@@ -25,6 +25,11 @@ class DataModel(db.Model):
                 db.session.add(self)
                 db.session.commit()   
 
+        @classmethod 
+        def save_bulk(cls,objects):
+                db.session.bulk_save_objects(objects)  
+                db.session.commit()
+
         @classmethod
         def RdData(cls, filters = [], dates = "", time_filter = ""):
                 date_conditions = []
