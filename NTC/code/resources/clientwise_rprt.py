@@ -14,19 +14,28 @@ class ClientRprt(Resource):
     def post(self):
 
         jdata = request.get_json()
+        print(jdata)
         dt = jdata['date']
+        sheet_name = jdata['sheetName']
         dt = dt.split('-')
         month = dt[1]
         year = dt[0]
+        select_item = []
+        if sheet_name == "Revenue":
+            select_item.append(func.sum(EmployeeRprtModel.Revenue))
+       
+        elif sheet_name == "Volume":
+            select_item.append(func.count(EmployeeRprtModel.order_number))
 
+        print(select_item)
         result = db.session.query(func.distinct(EmployeeRprtModel.client)).filter(func.year(EmployeeRprtModel.date_dt) == year, func.month(EmployeeRprtModel.date_dt) == month).all()
         final_array = [] 
         for i in result:
             final = {}
             if i[0] != None and i[0] != 'NonProd':
-                res = db.session.query(func.sum(EmployeeRprtModel.Revenue), EmployeeRprtModel.date_dt)\
+                res = db.session.query(*select_item, EmployeeRprtModel.date_dt)\
                     .filter(func.year(EmployeeRprtModel.date_dt) == year, func.month(EmployeeRprtModel.date_dt) == month,\
-                    EmployeeRprtModel.client == i[0]).group_by(EmployeeRprtModel.date_dt).all()
+                    EmployeeRprtModel.client == i[0], EmployeeRprtModel.status == 'Completed/Submitted').group_by(EmployeeRprtModel.date_dt).all()
             
                 final['client'] = i[0]
                 total = 0
