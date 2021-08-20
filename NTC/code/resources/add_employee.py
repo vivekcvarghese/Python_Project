@@ -16,7 +16,7 @@ class AddEmployee(Resource):
             if data["id"] == "":
                 result = db.session.query(EmployeeModel.empcode).filter(EmployeeModel.empcode == data['empcode']).all()
                 if result:
-                    return {"response":"Employee code already exists"}
+                    return {"response":"Employee Code already exist !"}
                 emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], ",".join(data['task']),
                     data['shift'],data['production_status'],data['training_duration'], data['planned_out_of_review_date'], data['actual_out_of_review_date'],
                     data['delay_reason'], data['delay_review_duration'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
