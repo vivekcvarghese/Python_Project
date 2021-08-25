@@ -14,7 +14,7 @@ class ClientRprt(Resource):
     def post(self):
 
         jdata = request.get_json()
-        print(jdata)
+        
         dt = jdata['date']
         sheet_name = jdata['sheetName']
         dt = dt.split('-')
@@ -27,7 +27,7 @@ class ClientRprt(Resource):
         elif sheet_name == "Volume":
             select_item.append(func.count(EmployeeRprtModel.order_number))
 
-        print(select_item)
+        
         result = db.session.query(func.distinct(EmployeeRprtModel.client)).filter(func.year(EmployeeRprtModel.date_dt) == year, func.month(EmployeeRprtModel.date_dt) == month).all()
         final_array = [] 
         for i in result:

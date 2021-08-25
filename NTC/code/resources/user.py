@@ -15,7 +15,6 @@ class User(Resource):
         username = "NTCBPOHYD\\"+AccountName
 
         res = LoginModel.getcredentials(AccountName,pswd)
-
         if res != None:
             return {"login":"success", 
                     "name":res.name,

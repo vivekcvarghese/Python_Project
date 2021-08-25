@@ -14,6 +14,7 @@ from resources.task_dropdown import DropDown
 from resources.fetch_single_status import FetchSingleStatus
 from resources.pivot_datefilter import PivotDateFilter
 from resources.add_employee import AddEmployee, EditEmployee
+from resources.yearly_report import YearlyReport
 from flask_cors import CORS
 
 
@@ -39,7 +40,7 @@ api.add_resource(FetchSingleStatus, '/api/singlestatus')
 api.add_resource(PivotDateFilter, '/api/pivottables')
 api.add_resource(AddEmployee, '/api/addemployee')
 api.add_resource(EditEmployee, '/api/editemployee/<string:empid>')
-
+api.add_resource(YearlyReport, '/api/yearlyemprprt')
 
 
 if __name__ == '__main__':

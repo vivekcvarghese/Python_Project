@@ -79,6 +79,7 @@ class EmployeeModel(db.Model):
                 final["doj"] = "NA"
             else:
                 final["doj"] = i.doj.strftime("%Y-%m-%d")
+            final["shift"] = i.shift    
             final["search"] = i.search
             final["client"] = i.client
             
@@ -87,7 +88,7 @@ class EmployeeModel(db.Model):
             else:
                 final["task"] = i.TASK.split(",")
 
-            final["shift"] = i.shift
+            
             final["production_status"] = i.production_status
             final["training_duration"] = i.training_duration
             if i.PORD == None:
@@ -99,9 +100,10 @@ class EmployeeModel(db.Model):
                 final["actual_out_of_review_date"] = "NA"
             else:
                 final["actual_out_of_review_date"] = i.AORD.strftime("%Y-%m-%d")
-
-            final["delay_reason"] = i.delay_reason
+                
             final["delay_review_duration"] = i.delay_duration
+            final["delay_reason"] = i.delay_reason
+            
             final["id"] = i.id
 
             output.append(final)
