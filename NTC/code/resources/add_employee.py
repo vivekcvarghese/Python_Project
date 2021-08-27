@@ -44,7 +44,7 @@ class EditEmployee(Resource):
         res = db.session.query(EmployeeModel.created_on,EmployeeModel.created_by).filter(EmployeeModel.id == data["id"]).one()
         
         # insert new record to keep track update history
-        emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'], data['task'],
+        emp = EmployeeModel(data['empcode'], data['name'], data['doj'], data['search'], data['client'],  ",".join(data['task']),
                 data['shift'],data['production_status'],data['training_duration'], data['planned_out_of_review_date'], data['actual_out_of_review_date'],
                 data['delay_reason'], data['delay_review_duration'], res[0], res[1], datetime.now(), data['username'], 1)
         emp.insert()

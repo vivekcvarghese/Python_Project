@@ -5,7 +5,7 @@ from flask_jwt import JWT
 from resources.user import User
 from resources.getdata import GetData
 from resources.date_filter import DateFilter
-from resources.employee_report import EmployeeReport
+from resources.employee_report import EmployeeReport,DeleteEmployeeReport
 from resources.emp_rprt_date import EmpRprtDate
 from resources.view_own_status import ViewOwnStatus
 from resources.monthly_rprt import RevenueRprt
@@ -41,6 +41,8 @@ api.add_resource(PivotDateFilter, '/api/pivottables')
 api.add_resource(AddEmployee, '/api/addemployee')
 api.add_resource(EditEmployee, '/api/editemployee/<string:empid>')
 api.add_resource(YearlyReport, '/api/yearlyemprprt')
+api.add_resource(DeleteEmployeeReport, '/api/delemprprt')
+
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import math
 
 from flask import request
 from flask_restful import Resource
+from sqlalchemy.sql.expression import delete
 from models.report_table import EmployeeRprtModel
 from models.target_table import TargetModel
 
@@ -58,4 +59,17 @@ class EmployeeReport(Resource):
     def get(self):
         return EmployeeRprtModel.fetchStatus(0,"","")
 
-     
+
+class DeleteEmployeeReport(Resource): 
+
+    def post(self):
+
+        jdata = request.get_json()
+        data = jdata['inputs']
+
+        emp = EmployeeRprtModel.singleStatus(data['id'])
+        emp.delete()
+
+        EmployeeRprtModel.getDWB(data['account_name'], data['date'])
+
+        return {"status": "Deleted"}

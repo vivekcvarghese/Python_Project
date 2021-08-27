@@ -70,25 +70,58 @@ class YearlyClientRprt(Resource):
     def post(self):
 
         jdata = request.get_json()
-        startDate = jdata['startDate']
-        endDate = jdata['endDate']
+        year = jdata['date']
+        sheet_name = jdata['sheetName']
+        ml = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
-        result = db.session.query(func.distinct(EmployeeRprtModel.client))\
-                .filter(EmployeeRprtModel.date_dt.between(startDate,endDate)).all()
+        select_item = []
+        if sheet_name == "Revenue":
+            select_item.append(func.sum(EmployeeRprtModel.Revenue))
+       
+        elif sheet_name == "Volume":
+            select_item.append(func.count(EmployeeRprtModel.order_number))
 
+        result = db.session.query(func.distinct(EmployeeRprtModel.client)).filter(func.year(EmployeeRprtModel.date_dt) == year).all()
         final_array = [] 
         for i in result:
             final = {}
             if i[0] != None and i[0] != 'NonProd':
-                res = db.session.query(func.sum(EmployeeRprtModel.Revenue), func.count(EmployeeRprtModel.order_number))\
-                    .filter(EmployeeRprtModel.date_dt.between(startDate,endDate),\
-                    EmployeeRprtModel.client == i[0], EmployeeRprtModel.status == 'Completed/Submitted').one()
+                res = db.session.query(*select_item, func.month(EmployeeRprtModel.date_dt))\
+                    .filter(func.year(EmployeeRprtModel.date_dt) == year,\
+                    EmployeeRprtModel.client == i[0], EmployeeRprtModel.status == 'Completed/Submitted').group_by(func.month(EmployeeRprtModel.date_dt)).all()
 
                 final['client'] = i[0]
-                final["revenue"] = float(round(res[0], 2))
-                final["order_count"] = res[1]
-                final_array.append(final)
+                total = 0
+                for j in res:
+                    final[ml[(j[1]-1)]] = float(round(j[0], 2))
+                    total += j[0]
+                if total != 0:
+                    final['total'] = float(round(total, 2))
+                    final_array.append(final)
+        output = {}
+        output["data"] = final_array
+        output["dates"] = ml
+
+        # jdata = request.get_json()
+        # startDate = jdata['startDate']
+        # endDate = jdata['endDate']
+
+        # result = db.session.query(func.distinct(EmployeeRprtModel.client))\
+        #         .filter(EmployeeRprtModel.date_dt.between(startDate,endDate)).all()
+
+        # final_array = [] 
+        # for i in result:
+        #     final = {}
+        #     if i[0] != None and i[0] != 'NonProd':
+        #         res = db.session.query(func.sum(EmployeeRprtModel.Revenue), func.count(EmployeeRprtModel.order_number))\
+        #             .filter(EmployeeRprtModel.date_dt.between(startDate,endDate),\
+        #             EmployeeRprtModel.client == i[0], EmployeeRprtModel.status == 'Completed/Submitted').one()
+
+        #         final['client'] = i[0]
+        #         final["revenue"] = float(round(res[0], 2))
+        #         final["order_count"] = res[1]
+        #         final_array.append(final)
 
         output = json.dumps(final_array, indent = 4)   
-
+        # print(output)
         return output

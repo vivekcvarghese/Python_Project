@@ -17,7 +17,7 @@ class YearlyReport(Resource):
         jdata = request.get_json()
         year = jdata['date']
         sheet_name = jdata['sheetName']
-        ml = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        ml = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
         select_item = []
 
@@ -42,7 +42,7 @@ class YearlyReport(Resource):
 
             result = db.session.query(*select_item, func.month(EmployeeRprtModel.date_dt))\
                 .filter(func.year(EmployeeRprtModel.date_dt) == year,\
-                EmployeeRprtModel.account_name == i.empcode).group_by(func.month(EmployeeRprtModel.date_dt)).all()
+                EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted').group_by(func.month(EmployeeRprtModel.date_dt)).all()
             
             final["empcode"] = i.empcode
             final["name"] = i.name
