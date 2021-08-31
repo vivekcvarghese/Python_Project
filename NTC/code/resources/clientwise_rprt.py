@@ -101,6 +101,7 @@ class YearlyClientRprt(Resource):
         output = {}
         output["data"] = final_array
         output["dates"] = ml
+        output["sheet"] = sheet_name
 
         # jdata = request.get_json()
         # startDate = jdata['startDate']
@@ -122,6 +123,7 @@ class YearlyClientRprt(Resource):
         #         final["order_count"] = res[1]
         #         final_array.append(final)
 
-        output = json.dumps(final_array, indent = 4)   
-        # print(output)
+        output = json.dumps(output, indent = 4)   
+        print(output)
+
         return output
