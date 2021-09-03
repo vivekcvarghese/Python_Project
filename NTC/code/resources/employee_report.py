@@ -18,8 +18,11 @@ class EmployeeReport(Resource):
 
         res = TargetModel.GetBandValue(data['Process'])
        
-        if res != None and data['status'] == 'Completed/Submitted' :
-            target_time = 1/res[0] 
+        if res != None and data['status'] == 'Completed/Submitted':
+            if res[0] == 0:
+                target_time = 0
+            else:    
+                target_time = 1/res[0] 
             price = res[1]
         else:
             target_time = 0
