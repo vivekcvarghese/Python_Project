@@ -124,6 +124,6 @@ class YearlyClientRprt(Resource):
         #         final_array.append(final)
 
         output = json.dumps(output, indent = 4)   
-        print(output)
+    
 
         return output

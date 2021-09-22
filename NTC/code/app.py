@@ -1,7 +1,8 @@
+import os
+
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
-
 from resources.user import User
 from resources.getdata import GetData
 from resources.date_filter import DateFilter
@@ -16,10 +17,14 @@ from resources.pivot_datefilter import PivotDateFilter
 from resources.add_employee import AddEmployee, EditEmployee
 from resources.yearly_report import YearlyReport
 from flask_cors import CORS
+from db import db
+from dotenv import load_dotenv
 
+load_dotenv()
+pswd = os.getenv('MYSQL')
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root@localhost/ntc"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:{}@docker_db_1:15000/ntc".format(pswd)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 
 # app.config['PROPAGATE_EXCEPTIONS'] = True
@@ -42,10 +47,9 @@ api.add_resource(AddEmployee, '/api/addemployee')
 api.add_resource(EditEmployee, '/api/editemployee/<string:empid>')
 api.add_resource(YearlyReport, '/api/yearlyemprprt')
 api.add_resource(DeleteEmployeeReport, '/api/delemprprt')
-
+db.init_app(app)
 
 
 if __name__ == '__main__':
-    from db import db
-    db.init_app(app)
-    app.run(debug=True)  
+
+    app.run(host='0.0.0.0', port=11240)  

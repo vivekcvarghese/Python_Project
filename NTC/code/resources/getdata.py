@@ -62,7 +62,7 @@ class GetData(Resource):
             DataInsertion(sp2, timestampStr)
 
         except:
-            return {"response" : "Invalid file"}
+            return {"response" : "Only RVSI and SP2 files allowed!"}
 
         return {"response":"file added successfully."}
        
