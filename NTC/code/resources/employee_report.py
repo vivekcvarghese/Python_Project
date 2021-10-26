@@ -15,7 +15,7 @@ class EmployeeReport(Resource):
 
         jdata = request.get_json()
         data = jdata['inputs']
-
+        print(data)
         res = TargetModel.GetBandValue(data['Process'])
        
         if res != None and data['status'] == 'Completed/Submitted':

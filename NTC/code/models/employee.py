@@ -22,13 +22,14 @@ class EmployeeModel(db.Model):
     AORD=db.Column(db.Date)
     delay_reason=db.Column(db.String(100))
     delay_duration=db.Column(db.String(100))
+    role=db.Column(db.String(100))
     created_on=db.Column(db.DateTime)
     created_by=db.Column(db.String(100))
     updated_on=db.Column(db.DateTime)
     updated_by=db.Column(db.String(100))
     deleted=db.Column(db.Boolean, default=False)
 
-    def __init__(self,empcode,name,doj,search,client,TASK,shift,production_status,training_duration,PORD,AORD,delay_reason,delay_duration,created_on,created_by,updated_on,updated_by,deleted):
+    def __init__(self,empcode,name,doj,search,client,TASK,shift,production_status,training_duration,PORD,AORD,delay_reason,delay_duration,role,created_on,created_by,updated_on,updated_by,deleted):
         self.empcode = empcode
         self.name = name
         self.doj = doj
@@ -42,6 +43,7 @@ class EmployeeModel(db.Model):
         self.AORD = AORD
         self.delay_reason = delay_reason
         self.delay_duration = delay_duration
+        self.role = role
         self.created_on = created_on
         self.created_by = created_by
         self.updated_on = updated_on
@@ -103,7 +105,7 @@ class EmployeeModel(db.Model):
                 
             final["delay_review_duration"] = i.delay_duration
             final["delay_reason"] = i.delay_reason
-            
+            final["role"] = i.role
             final["id"] = i.id
 
             output.append(final)
