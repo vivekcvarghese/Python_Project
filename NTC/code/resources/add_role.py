@@ -17,7 +17,7 @@ class AddRole(Resource):
         result = db.session.query(RoleModel.role).filter(RoleModel.role == data['role']).all()
         if result:
             return {"response":"Employee role already exist !"}
-        emp = RoleModel(data['role'], data['resources'], datetime.now(), data['username'], datetime.now(), data['username'], 0)
+        emp = RoleModel(data['role'],  ",".join(data['resources']), datetime.now(), data['username'], datetime.now(), data['username'], 0)
         emp.insert()
         return {"response":"Success"}  
     
@@ -26,7 +26,7 @@ class AddRole(Resource):
         data = jdata['inputs'] 
         res = db.session.query(RoleModel).filter(RoleModel.id == id).first()
 
-        res.resources = data['resources']
+        res.resources =  ",".join(data['resources'])
         res.updated_by = data['username']
         res.updated_on = datetime.now()
 
