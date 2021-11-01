@@ -1,4 +1,4 @@
-import re
+
 from db import db
 from sqlalchemy import func, desc
 

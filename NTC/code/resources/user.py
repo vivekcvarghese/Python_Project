@@ -22,7 +22,6 @@ class User(Resource):
         if res != None:
             #check if the user is present in our application and fetch his/her role
             res1 = db.session.query(EmployeeModel.role).filter(EmployeeModel.empcode == AccountName, EmployeeModel.deleted == 0, EmployeeModel.updated_on == (db.session.query(func.max(EmployeeModel.updated_on)).filter(EmployeeModel.empcode == AccountName))).first()
-            print(res1)
             if(res1 == None or res1[0] == ""):
                 return{"login":"Contact Manager"}
             return {"login":"success", 
