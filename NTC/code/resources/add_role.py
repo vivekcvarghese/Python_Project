@@ -18,7 +18,7 @@ class AddRole(Resource):
         if result:
             return {"response":"Employee role already exist !"}
         emp = RoleModel(data['role'],  ",".join(data['resources']), datetime.now(), data['username'], datetime.now(), data['username'], 0)
-        emp.insert()
+        emp.save_to_db()
         return {"response":"Success"}  
     
     def put(self,id):
@@ -30,7 +30,7 @@ class AddRole(Resource):
         res.updated_by = data['username']
         res.updated_on = datetime.now()
 
-        res.insert()
+        res.save_to_db()
         return
 
     def delete(self,id):
@@ -46,9 +46,9 @@ class AddRole(Resource):
         res.updated_on = datetime.now()
         res.deleted = 1
 
-        res.insert()
+        res.save_to_db()
         return
 
     def get(self,id):
-        res = EmployeeModel.getAllEmployees()
+        res = RoleModel.getrolelist()
         return res

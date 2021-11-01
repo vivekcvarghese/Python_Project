@@ -1,3 +1,4 @@
+import json
 from db import db
 from sqlalchemy import func, desc
 
@@ -31,6 +32,19 @@ class RoleModel(db.Model):
 
         @classmethod
         def getrolelist(cls):
-            res = db.session.query(RoleModel.role).all()
-            return res
+            res = db.session.query(RoleModel.id, RoleModel.role, RoleModel.resources).all()
+            output = []
+            for i in res:
+            
+                final = {}
+                final["id"] = i[0]
+                final["role"] = i[1]
+                final["resources"] = i[2].split(",")
+                output.append(final)
+            
+    
+            output = json.dumps(output, indent = 4)   
+            return output
+
+        
 

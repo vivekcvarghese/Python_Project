@@ -48,7 +48,7 @@ api.add_resource(AddEmployee, '/api/addemployee')
 api.add_resource(EditEmployee, '/api/editemployee/<string:empid>')
 api.add_resource(YearlyReport, '/api/yearlyemprprt')
 api.add_resource(DeleteEmployeeReport, '/api/delemprprt')
-api.add_resource(AddRole, '/api/addrole')
+api.add_resource(AddRole, '/api/addrole/<string:id>')
 
 
 
