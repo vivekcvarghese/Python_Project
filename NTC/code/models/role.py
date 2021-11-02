@@ -32,7 +32,7 @@ class RoleModel(db.Model):
 
         @classmethod
         def getrolelist(cls):
-            res = db.session.query(RoleModel.id, RoleModel.role, RoleModel.resources).all()
+            res = db.session.query(RoleModel.id, RoleModel.role, RoleModel.resources).filter(RoleModel.deleted != 1).all()
             output = []
             for i in res:
             
