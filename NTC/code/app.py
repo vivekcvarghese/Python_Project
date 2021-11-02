@@ -16,7 +16,7 @@ from resources.fetch_single_status import FetchSingleStatus
 from resources.pivot_datefilter import PivotDateFilter
 from resources.add_employee import AddEmployee, EditEmployee
 from resources.yearly_report import YearlyReport
-from resources.add_role import AddRole
+from resources.add_role import AddRole, EditRole
 from flask_cors import CORS
 
 from dotenv import load_dotenv
@@ -48,9 +48,8 @@ api.add_resource(AddEmployee, '/api/addemployee')
 api.add_resource(EditEmployee, '/api/editemployee/<string:empid>')
 api.add_resource(YearlyReport, '/api/yearlyemprprt')
 api.add_resource(DeleteEmployeeReport, '/api/delemprprt')
-api.add_resource(AddRole, '/api/addrole/<string:id>')
-
-
+api.add_resource(EditRole, '/api/editrole/<string:id>')
+api.add_resource(AddRole, '/api/addrole')
 
 
 if __name__ == '__main__':
