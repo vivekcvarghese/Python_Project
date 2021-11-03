@@ -23,6 +23,14 @@ class EditRole(Resource):
         res.save_to_db()
         return
 
+    def get(self,id):
+        res = db.session.query(RoleModel.role).filter(RoleModel.deleted != 1).all()
+        output = []
+        for i in res:
+            output.append(i[0])
+        return output
+        
+
 
 class AddRole(Resource):
 

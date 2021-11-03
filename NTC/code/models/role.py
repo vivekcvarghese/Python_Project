@@ -47,8 +47,9 @@ class RoleModel(db.Model):
             output = json.dumps(output, indent = 4)   
             return output
 
+        @classmethod
         def getresources(cls, role):
-            res = db.session.query(RoleModel.resources).filter(RoleModel.RoleModel ==  role, RoleModel.deleted != 1).first()
+            res = db.session.query(RoleModel.resources).filter(RoleModel.role ==  role, RoleModel.deleted != 1).first()
             output = res[0].split(",")
             return output
 
