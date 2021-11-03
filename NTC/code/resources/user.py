@@ -6,6 +6,7 @@ from db import db
 from flask_restful import Resource
 from models.login import LoginModel
 from models.employee import EmployeeModel
+from models.role import RoleModel
 from ldap3 import *
 
 class User(Resource):
@@ -24,10 +25,11 @@ class User(Resource):
             res1 = db.session.query(EmployeeModel.role).filter(EmployeeModel.empcode == AccountName, EmployeeModel.deleted == 0, EmployeeModel.updated_on == (db.session.query(func.max(EmployeeModel.updated_on)).filter(EmployeeModel.empcode == AccountName))).first()
             if(res1 == None or res1[0] == ""):
                 return{"login":"Contact Manager"}
+            des = RoleModel.getresources(res1[0])
             return {"login":"success", 
                     "name":res.name,
                     "account_name":res.username, 
-                    "description": res1[0],
+                    "description": des,
                     "cn":"cn"}
 
 
