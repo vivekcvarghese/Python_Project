@@ -73,9 +73,9 @@ class User(Resource):
         res1 = db.session.query(EmployeeModel.role).filter(EmployeeModel.empcode == AccountName, EmployeeModel.deleted == 0).first()
         if(res1 == None):
             return{"login":"Contact Manager"}
-        
+        des = RoleModel.getresources(res1[0])
         return {"login":"success", 
                     "name":Name,
                     "account_name":AccountName, 
-                    "description": res1[0],
+                    "description": des,
                     "cn":cn}

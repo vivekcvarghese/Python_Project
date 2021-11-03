@@ -53,4 +53,11 @@ class RoleModel(db.Model):
             output = res[0].split(",")
             return output
 
+        @classmethod
+        def getroles(cls):
+            res = db.session.query(RoleModel.role).filter(RoleModel.deleted != 1).all()
+            output = []
+            for i in res:
+                output.append(i[0])
+            return output
 

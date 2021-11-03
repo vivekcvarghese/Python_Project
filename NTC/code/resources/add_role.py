@@ -21,23 +21,14 @@ class EditRole(Resource):
         res.updated_on = datetime.now()
 
         res.save_to_db()
-        return
-
-    def get(self,id):
-        res = db.session.query(RoleModel.role).filter(RoleModel.deleted != 1).all()
-        output = []
-        for i in res:
-            output.append(i[0])
-        return output
-        
-
+        return {"response":"Success"}
 
 class AddRole(Resource):
 
     def post(self):
         jdata = request.get_json()
         data = jdata['inputs'] 
-        result = db.session.query(RoleModel.role).filter(RoleModel.role == data['role']).all()
+        result = db.session.query(RoleModel.role).filter(RoleModel.role == data['role'], RoleModel.deleted == 0).all()
         if result:
             return {"response":"Employee role already exist !"}
         emp = RoleModel(data['role'],  ",".join(data['resources']), datetime.now(), data['username'], datetime.now(), data['username'], 0)
@@ -64,4 +55,4 @@ class AddRole(Resource):
         res.deleted = 1
 
         res.save_to_db()
-        return
+        return {"response":"Success"}
