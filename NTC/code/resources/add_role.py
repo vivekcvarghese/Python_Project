@@ -1,8 +1,6 @@
 import json
-
-from sqlalchemy.sql.expression import delete
+from sqlalchemy import func
 from db import db
-
 from models.role import RoleModel
 from models.employee import EmployeeModel
 from flask import request
@@ -44,9 +42,14 @@ class AddRole(Resource):
     def put(self):
         jdata = request.get_json()
         data = jdata['inputs']
-    
-        res = db.session.query(EmployeeModel.role).filter(EmployeeModel.role == data['role'], EmployeeModel.deleted == 0).first()
-        if(res):
+
+
+        st = EmployeeModel.__dict__['__table__'].alias("u")
+        res1 = db.session.query(st.c.role).filter(st.c.deleted == 0, st.c.role == data['role'], st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\
+        .filter(EmployeeModel.empcode==st.c.empcode))).first()
+
+        # res = db.session.query(EmployeeModel.role).filter(EmployeeModel.role == data['role'], EmployeeModel.deleted == 0).first()
+        if(res1):
             return {"response":"Employee with this role exists"}
 
         res = db.session.query(RoleModel).filter(RoleModel.id == data['id']).first()

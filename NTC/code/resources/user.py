@@ -31,51 +31,42 @@ class User(Resource):
                     "account_name":res.username, 
                     "description": des,
                     "cn":"cn"}
+        return {"login":"invalid credentials"}
+class ResetPassword(Resource):
 
-
-
-        # if (AccountName == "" and pswd ==""):
-        #     return {"login":"success", 
-        #             "name":"PRASHANT CHAND",
-        #             "account_name":"", 
-        #             "description": "Admin",
-        #             "cn":"cn"}
-        # elif (username == "employee" and pswd =="employee"):
-        #     return {"login":"success", 
-        #             "name":"KUKUTLA SRAVAN",
-        #             "account_name":"ER327", 
-        #             "description": "",
-        #             "cn":"cn"}
-        # else:
-        #     return {"login":"invalid credentials"}
-
-
-        try:
-            # AccountName = username.split("\\")[1]
+    def post(self):
+        data = request.get_json()
+        res = LoginModel.getcredentials(data['username'], data['currentPassword'])
+        if res != None:
+            LoginModel.changePassword(data['username'], data['newPassword'])
+            return {"response":"Success"}
+        return {"response":"Incorrect Password"}
+        # try:
+        #     # AccountName = username.split("\\")[1]
             
-            server = Server('ntcbpohyd.com')
-            conn = Connection(server, user=username, password=pswd, auto_bind=True)
-            conn.search('dc=ntcbpohyd,dc=com','(&(objectclass=person)(sAMAccountName ='+AccountName+'))', attributes=['displayName', 'description','distinguishedName'])
+        #     server = Server('ntcbpohyd.com')
+        #     conn = Connection(server, user=username, password=pswd, auto_bind=True)
+        #     conn.search('dc=ntcbpohyd,dc=com','(&(objectclass=person)(sAMAccountName ='+AccountName+'))', attributes=['displayName', 'description','distinguishedName'])
         
-        except:
+        # except:
 
-            return {"login":"invalid credentials"}
+        #     return {"login":"invalid credentials"}
         
-        Name = str(conn.entries[0].displayName)
-        description = str(conn.entries[0].description)
-        if (description == '[]'):
-            description = ""
+        # Name = str(conn.entries[0].displayName)
+        # description = str(conn.entries[0].description)
+        # if (description == '[]'):
+        #     description = ""
 
-        data = conn.entries[0].entry_dn
-        cn = data.split(',')[1].split('=')[1]
+        # data = conn.entries[0].entry_dn
+        # cn = data.split(',')[1].split('=')[1]
 
-        #check if the user is present in our application and fetch his/her role
-        res1 = db.session.query(EmployeeModel.role).filter(EmployeeModel.empcode == AccountName, EmployeeModel.deleted == 0).first()
-        if(res1 == None):
-            return{"login":"Contact Manager"}
-        des = RoleModel.getresources(res1[0])
-        return {"login":"success", 
-                    "name":Name,
-                    "account_name":AccountName, 
-                    "description": des,
-                    "cn":cn}
+        # #check if the user is present in our application and fetch his/her role
+        # res1 = db.session.query(EmployeeModel.role).filter(EmployeeModel.empcode == AccountName, EmployeeModel.deleted == 0).first()
+        # if(res1 == None):
+        #     return{"login":"Contact Manager"}
+        # des = RoleModel.getresources(res1[0])
+        # return {"login":"success", 
+        #             "name":Name,
+        #             "account_name":AccountName, 
+        #             "description": des,
+        #             "cn":cn}

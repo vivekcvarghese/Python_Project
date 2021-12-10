@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
-from resources.user import User
+from resources.user import User, ResetPassword
 from resources.getdata import GetData
 from resources.date_filter import DateFilter
 from resources.employee_report import EmployeeReport,DeleteEmployeeReport
@@ -50,6 +50,7 @@ api.add_resource(YearlyReport, '/api/yearlyemprprt')
 api.add_resource(DeleteEmployeeReport, '/api/delemprprt')
 api.add_resource(EditRole, '/api/editrole/<string:id>')
 api.add_resource(AddRole, '/api/addrole')
+api.add_resource(ResetPassword, '/api/resetpassword')
 
 
 if __name__ == '__main__':

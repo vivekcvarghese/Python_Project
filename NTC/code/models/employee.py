@@ -88,7 +88,10 @@ class EmployeeModel(db.Model):
             if temp == 2:
                 final["task"] = i.TASK
             else:
-                final["task"] = i.TASK.split(",")
+                try:
+                    final["task"] = i.TASK.split(",")
+                except:
+                    pass
 
             
             final["production_status"] = i.production_status
