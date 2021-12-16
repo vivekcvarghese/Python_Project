@@ -7,11 +7,12 @@ from sqlalchemy import func
 from models.report_table import EmployeeRprtModel
 from models.employee import EmployeeModel
 from flask import request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
 
 class RevenueRprt(Resource):
-
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()

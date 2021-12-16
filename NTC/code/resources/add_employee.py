@@ -1,14 +1,14 @@
 import json
 from db import db
 from datetime import datetime
-
+from flask_jwt_extended import jwt_required
 from models.employee import EmployeeModel
 from models.login import LoginModel
 from flask import request
 from flask_restful import Resource
 
 class AddEmployee(Resource):
-
+    @jwt_required()
     def post(self):
         #add and update employee
         jdata = request.get_json()
@@ -34,13 +34,14 @@ class AddEmployee(Resource):
         except:
             return {"response":"Failed"}
         return {"response":"Success"}
-    
+    @jwt_required()
     def get(self):
         res = EmployeeModel.getAllEmployees()
         return EmployeeModel.setOutputFormat(res,2)
 
 class EditEmployee(Resource):
 # delete employee method
+    @jwt_required()
     def post(self,empid):
         jdata = request.get_json()
         data = jdata['inputs']
@@ -59,7 +60,7 @@ class EditEmployee(Resource):
         del_usr = db.session.query(LoginModel).filter(LoginModel.username == data['empcode']).first()
         del_usr.delete()
         return
-
+    @jwt_required()
     def get(self, empid):
 
         res = EmployeeModel.getSingleEmployee(empid)

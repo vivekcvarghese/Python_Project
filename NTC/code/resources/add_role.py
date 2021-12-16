@@ -6,9 +6,9 @@ from models.employee import EmployeeModel
 from flask import request
 from datetime import datetime
 from flask_restful import Resource
-
+from flask_jwt_extended import jwt_required
 class EditRole(Resource):
-
+    @jwt_required()
     def put(self,id):
         jdata = request.get_json()
         data = jdata['inputs'] 
@@ -22,7 +22,7 @@ class EditRole(Resource):
         return {"response":"Success"}
 
 class AddRole(Resource):
-
+    @jwt_required()
     def post(self):
         jdata = request.get_json()
         data = jdata['inputs'] 
@@ -33,12 +33,13 @@ class AddRole(Resource):
         emp.save_to_db()
         return {"response":"Success"}
 
-
+    @jwt_required()
     def get(self):
         res = RoleModel.getrolelist()
         return res
 
 #delete role
+    @jwt_required()
     def put(self):
         jdata = request.get_json()
         data = jdata['inputs']

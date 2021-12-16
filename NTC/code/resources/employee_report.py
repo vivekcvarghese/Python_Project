@@ -7,10 +7,11 @@ from flask_restful import Resource
 from sqlalchemy.sql.expression import delete
 from models.report_table import EmployeeRprtModel
 from models.target_table import TargetModel
+from flask_jwt_extended import jwt_required
 
 class EmployeeReport(Resource):
 
-
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()
@@ -64,7 +65,7 @@ class EmployeeReport(Resource):
 
 
 class DeleteEmployeeReport(Resource): 
-
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()

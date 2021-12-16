@@ -4,9 +4,11 @@ import datetime
 from flask import request
 from flask_restful import Resource
 from models.report_table import EmployeeRprtModel
+from flask_jwt_extended import jwt_required
 
 class EmpRprtDate(Resource):
 # Daily and yearly report page for manager
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()

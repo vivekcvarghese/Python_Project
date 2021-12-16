@@ -8,15 +8,16 @@ from models.rd_data import DataModel
 from tablib import Dataset
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import jwt_required
 
 class GetData(Resource):
-
+    @jwt_required()
     def get(self):
       
         opData = DataModel.RdData()
         opData = json.dumps(opData, indent = 4)   
         return opData
-
+    @jwt_required()
     def post(self):
 
         def FormatDate(SLAexp):

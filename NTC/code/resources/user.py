@@ -8,6 +8,7 @@ from models.login import LoginModel
 from models.employee import EmployeeModel
 from models.role import RoleModel
 from ldap3 import *
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 
 class User(Resource):
 
@@ -16,7 +17,7 @@ class User(Resource):
         jdata = request.get_json()
         AccountName = jdata['username']
         pswd = jdata['password']
-        username = "NTCBPOHYD\\"+AccountName
+        # username = "NTCBPOHYD\\"+AccountName
 
         
         res = LoginModel.getcredentials(AccountName,pswd)
@@ -26,14 +27,16 @@ class User(Resource):
             if(res1 == None or res1[0] == ""):
                 return{"login":"Contact Manager"}
             des = RoleModel.getresources(res1[0])
+            access_token = create_access_token(identity = AccountName)
             return {"login":"success", 
                     "name":res.name,
                     "account_name":res.username, 
                     "description": des,
+                    "token": access_token,
                     "cn":"cn"}
         return {"login":"invalid credentials"}
 class ResetPassword(Resource):
-
+    @jwt_required()
     def post(self):
         data = request.get_json()
         res = LoginModel.getcredentials(data['username'], data['currentPassword'])

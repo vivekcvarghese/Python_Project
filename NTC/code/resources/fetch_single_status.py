@@ -3,11 +3,12 @@ import json
 from models.report_table import EmployeeRprtModel
 from flask import request
 from flask_restful import Resource
+from flask_jwt_extended import jwt_required
 
 
 class FetchSingleStatus(Resource):
 
-
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()

@@ -4,9 +4,11 @@ from models.dropdown_table import DropdownModel
 from models.role import RoleModel
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import jwt_required
 
 class DropDown(Resource):
 
+    @jwt_required()
     def get(self):
 
         title = DropdownModel.getTitles()

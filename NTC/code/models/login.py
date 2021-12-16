@@ -3,6 +3,7 @@ from db import db
 from sqlalchemy import func, desc
 from flask_bcrypt import generate_password_hash, check_password_hash
 
+
 class LoginModel(db.Model):
         __tablename__="login"
         id=db.Column(db.Integer,primary_key=True)

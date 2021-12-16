@@ -2,7 +2,8 @@ import os
 
 from flask import Flask
 from flask_restful import Api
-from flask_jwt import JWT
+# from flask_jwt import JWT
+from flask_jwt_extended import JWTManager
 from resources.user import User, ResetPassword
 from resources.getdata import GetData
 from resources.date_filter import DateFilter
@@ -29,6 +30,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:{}@localhos
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 
 # app.config['PROPAGATE_EXCEPTIONS'] = True
+
+jwt = JWTManager(app)
+app.config['JWT_SECRET_KEY'] = 'ntcbpohyd**jwt'
+
 api = Api(app)
 CORS(app)
 

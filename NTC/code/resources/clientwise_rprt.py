@@ -7,10 +7,10 @@ from sqlalchemy import func
 from models.report_table import EmployeeRprtModel
 from flask import request
 from flask_restful import Resource
-
+from flask_jwt_extended import jwt_required
 
 class ClientRprt(Resource):
-
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()
@@ -67,6 +67,7 @@ class ClientRprt(Resource):
 
 
 class YearlyClientRprt(Resource):
+    @jwt_required()
     def post(self):
 
         jdata = request.get_json()
