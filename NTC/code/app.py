@@ -1,7 +1,7 @@
 import os
-
 from flask import Flask
 from flask_restful import Api
+# from sqlalchemy import true
 # from flask_jwt import JWT
 from flask_jwt_extended import JWTManager
 from resources.user import User, ResetPassword
@@ -26,8 +26,9 @@ load_dotenv()
 pswd = os.getenv('MYSQL')
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:{}@localhost/ntc".format(pswd)
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+mysqlconnector://root:root@docker_db_1/ntc"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 
 # app.config['PROPAGATE_EXCEPTIONS'] = True
 
@@ -36,6 +37,11 @@ app.config['JWT_SECRET_KEY'] = 'ntcbpohyd**jwt'
 
 api = Api(app)
 CORS(app)
+
+# test
+# @app.before_first_request
+# def create_tables():
+#     db.create_all()
 
 api.add_resource(User, '/api/login')
 api.add_resource(GetData, '/api/getfile')
@@ -57,9 +63,9 @@ api.add_resource(EditRole, '/api/editrole/<string:id>')
 api.add_resource(AddRole, '/api/addrole')
 api.add_resource(ResetPassword, '/api/resetpassword')
 
+from db import db
+
 
 if __name__ == '__main__':
-    from db import db
-
     db.init_app(app)
-    app.run(debug=True)  
+    app.run(debug=True,host='0.0.0.0')  

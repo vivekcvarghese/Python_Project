@@ -8,21 +8,26 @@ from flask_jwt_extended import jwt_required
 
 class DropDown(Resource):
 
-    @jwt_required()
+    
     def get(self):
 
-        title = DropdownModel.getTitles()
+        # title = DropdownModel.getTitles()
         result = DropdownModel.getAll()
-        res = RoleModel.getroles()
-        op = {} 
+        res={element.title:element.value.split(",") for element in result}
+        role=RoleModel.getroles()
+        res["role"]=role
         
-        for j in title:
-            op[j] = []
+        # res = RoleModel.getroles()
+        # op = {} 
+        
+        # for j in title:
+        #     op[j] = []
 
-        for row in result:
-            for i in title:
-                if getattr(row, i) != None:
-                    op[i].append(getattr(row, i))
+        # for row in result:
+        #     for i in title:
+        #         if getattr(row, i) != None:
+        #             op[i].append(getattr(row, i))
 
-        op["role"] = res            
-        return op
+        # op["role"] = res            
+        
+        return res

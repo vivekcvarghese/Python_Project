@@ -7,7 +7,7 @@ from flask_restful import Resource
 from models.login import LoginModel
 from models.employee import EmployeeModel
 from models.role import RoleModel
-from ldap3 import *
+# from ldap3 import *
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 
 class User(Resource):
@@ -43,7 +43,8 @@ class ResetPassword(Resource):
         if res != None:
             LoginModel.changePassword(data['username'], data['newPassword'])
             return {"response":"Success"}
-        return {"response":"Incorrect Password"}
+        else:
+            return {"response":"Incorrect Password"}
         # try:
         #     # AccountName = username.split("\\")[1]
             

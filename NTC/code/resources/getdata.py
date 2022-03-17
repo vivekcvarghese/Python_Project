@@ -1,6 +1,4 @@
-import MySQLdb
-import pandas as pd
-import xlrd
+# import pandas as pd
 import json
 
 import datetime
@@ -32,7 +30,6 @@ class GetData(Resource):
             return lst
 
         def DataInsertion(raw_data, timestampStr):
-
             data = Dataset().load(raw_data)
             
             Order_Number = data["Order Number"]
