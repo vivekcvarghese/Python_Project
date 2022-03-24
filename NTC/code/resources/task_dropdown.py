@@ -8,7 +8,7 @@ from flask_jwt_extended import jwt_required
 
 class DropDown(Resource):
 
-    
+    @jwt_required()
     def get(self):
 
         # title = DropdownModel.getTitles()

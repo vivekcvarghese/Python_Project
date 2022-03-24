@@ -15,6 +15,8 @@ class EmployeeModel(db.Model):
     search=db.Column(db.String(100))
     client=db.Column(db.String(100))
     TASK=db.Column(db.String(100))
+    process=db.Column(db.String(100))
+    state=db.Column(db.String(100))
     shift=db.Column(db.String(100))
     production_status=db.Column(db.String(100))
     training_duration=db.Column(db.String(100))
@@ -29,13 +31,15 @@ class EmployeeModel(db.Model):
     updated_by=db.Column(db.String(100))
     deleted=db.Column(db.Boolean, default=False)
 
-    def __init__(self,empcode,name,doj,search,client,TASK,shift,production_status,training_duration,PORD,AORD,delay_reason,delay_duration,role,created_on,created_by,updated_on,updated_by,deleted):
+    def __init__(self,empcode,name,doj,search,client,TASK,process,state,shift,production_status,training_duration,PORD,AORD,delay_reason,delay_duration,role,created_on,created_by,updated_on,updated_by,deleted):
         self.empcode = empcode
         self.name = name
         self.doj = doj
         self.search = search
         self.client = client
         self.TASK = TASK
+        self.process = process
+        self.state = state
         self.shift = shift
         self.production_status = production_status
         self.training_duration = training_duration
@@ -85,15 +89,17 @@ class EmployeeModel(db.Model):
             final["search"] = i.search
             final["client"] = i.client
             
-            if temp == 2:
-                final["task"] = i.TASK
-            else:
-                try:
-                    final["task"] = i.TASK.split(",")
-                except:
-                    pass
+            # if temp == 2:
+            final["task"] = i.TASK
 
-            
+            # else:
+            #     try:
+            #         final["task"] = i.TASK.split(",")
+            #     except:
+            #         pass
+
+            final["process"] = i.process
+            final["state"] = i.state
             final["production_status"] = i.production_status
             final["training_duration"] = i.training_duration
             if i.PORD == None:
