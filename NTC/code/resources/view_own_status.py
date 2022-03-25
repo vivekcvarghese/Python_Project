@@ -28,6 +28,7 @@ class ViewOwnStatus(Resource):
             op["state"] = row.state
             op["start_Time"] = str(row.startTime)
             op["end_Time"] = str(row.endTime)
+            op["total_Time"] = str(row.totalTime)
             op["status"] = row.status
             op["last_updated_time"] = str(row.updated_time)
             op["id"] = row.id

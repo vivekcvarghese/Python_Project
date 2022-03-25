@@ -99,6 +99,8 @@ class EmployeeRprtModel(db.Model):
             final["search"] = i.search
             final["client"] = i.client
             final["task"] = i.TASK
+            final["process"] = i.process
+            final["state"] = i.state
             
             if result[0] != 0:
                 flag = 1

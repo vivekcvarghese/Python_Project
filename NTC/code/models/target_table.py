@@ -18,3 +18,9 @@ class TargetModel(db.Model):
     def GetBandValue(cls, process):
 
         return db.session.query(TargetModel.band1, TargetModel.price).filter(TargetModel.Process == process).first()
+
+
+    @classmethod
+    def GetTargetTable(cls):
+
+        return db.session.query(TargetModel).all()
