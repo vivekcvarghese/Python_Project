@@ -7,6 +7,18 @@ class DropdownModel(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     title=db.Column(db.String(100))
     value=db.Column(db.String(1000))
+
+    def __init__(self,title,value):
+        self.title = title
+        self.value = value
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def remove(self):
+        db.session.delete(self)
+        db.session.commit()
     
     @classmethod
     def getAll(cls):

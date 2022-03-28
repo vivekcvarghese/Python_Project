@@ -55,10 +55,10 @@ class TargetModel(db.Model):
         result=[
            {
                "id":i.id,
-               "client":i.Client,
-               "task":i.Task,
-               "process":i.Process,
-               "time":i.Time,
+               "Client":i.Client,
+               "Task":i.Task,
+               "Process":i.Process,
+               "Time":i.Time,
                "band1":i.band1,
                "band2":i.band2,
                "band3":i.band3,
