@@ -1,4 +1,4 @@
-from turtle import title
+from tabnanny import check
 from models.target_table import TargetModel
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
@@ -32,45 +32,96 @@ class SingleTarget(Resource):
             return {"response":"Error"}
 
 
-    # @jwt_required()
+    @jwt_required()
     def delete(self,id):
+        try:
+            res=db.session.query(TargetModel).filter(TargetModel.id == id).first()
+            #fetch array from dropdown table
+            title = res.Client+res.Task
+            dp = db.session.query(DropdownModel).filter(DropdownModel.title == title).first()
+            arr = (dp.value).split(",")
+            filtered = filter(lambda i: i != res.Process, arr)
+            filtered= list(filtered)
 
-        res=db.session.query(TargetModel).filter(TargetModel.id == id).first()
-        #fetch array from dropdown table
-        title = res.Client+res.Task
-        dp = db.session.query(DropdownModel).filter(DropdownModel.title == title).first()
-        arr = (dp.value).split(",")
-        filtered = filter(lambda i: i != res.Process, arr)
-        filtered= list(filtered)
+            if len(filtered) == 0:
+                dp.remove()
+                dp1 = db.session.query(DropdownModel).filter(DropdownModel.title == res.Client).first()
+                arr1 = (dp1.value).split(",")
+                filtered1 = filter(lambda i: i != res.Task, arr1)
+                filtered1= list(filtered1)
+                if len(filtered1) == 0:
+                    dp1.remove()
+                    dp2 = db.session.query(DropdownModel).filter(DropdownModel.title == "Client").first()
+                    arr2 = (dp2.value).split(",")
+                    filtered2 = filter(lambda i: i != res.Client, arr2)
+                    filtered2= list(filtered2)
+                    dp2.value = ",".join(filtered2)
+                    dp2.save()
 
-        if len(filtered) == 0:
-            dp.remove()
-            dp1 = db.session.query(DropdownModel).filter(DropdownModel.title == res.Client).first()
-            arr1 = (dp1.value).split(",")
-            filtered1 = filter(lambda i: i != res.Task, arr1)
-            filtered1= list(filtered1)
-            if len(filtered1) == 0:
-                dp1.remove()
-                dp2 = db.session.query(DropdownModel).filter(DropdownModel.title == "Client").first()
-                arr2 = (dp2.value).split(",")
-                filtered2 = filter(lambda i: i != res.Client, arr2)
-                filtered2= list(filtered2)
-                dp2.value = ",".join(filtered2)
-                dp2.save()
+                else:
+                    dp1.value = ",".join(filtered1)
+                    dp1.save()
 
             else:
-                dp1.value = ",".join(filtered1)
-                dp1.save()
+                dp.value = ",".join(filtered)
+                dp.save()
 
-        else:
-            dp.value = ",".join(filtered)
-            dp.save()
+            
+            res.delete()
+            return {"response":"Success"}
 
+
+        except:
+            return {"response":"Error"}
+
+
+    @jwt_required()
+    def post(self):
+        data = request.get_json()
+        #check data already exists
+        check = db.session.query(TargetModel).filter(TargetModel.Client == data["Client"], TargetModel.Task == data["Task"], TargetModel.Process == data["Process"]).first()
+        if check:
+            return {"response":"Data already exists!"}
         
-        res.delete()
-        return 
+        target = TargetModel(data["Client"], data["Task"], data["Process"], data["Time"], data["band1"], data["band2"], data["band3"], data["price"])
+        target.save_to_db()
+
+        #insert to dropdown table\
+        client = db.session.query(DropdownModel).filter(DropdownModel.title == "Client").first()
+        client_arr = client.value.split(",")
+        if data["Client"] in client_arr:
+            task = db.session.query(DropdownModel).filter(DropdownModel.title == data["Client"]).first()
+            task_arr = task.value.split(",")
+            if data["Task"] in task_arr:
+                tmp = data["Client"]+data["Task"]
+                process = db.session.query(DropdownModel).filter(DropdownModel.title == tmp).first()
+                process_arr = process.value.split(",")
+                if data["Process"] not in process_arr:
+        
+                    process_arr.append(data["Process"])
+                    process.value = ",".join(process_arr)
+                    process.save()
+
+            else:
+                task_arr.append(data["Task"])
+                task.value =",".join(task_arr)
+                task.save()
+                tmp = data["Client"]+data["Task"]
+                new_rcrd = DropdownModel(tmp,data["Process"])
+                new_rcrd.save()
+        else:
+            client_arr.append(data["Client"])
+            client.value = ",".join(client_arr)
+            client.save()
+            new_rcrd = DropdownModel(data["Client"],data["Task"])
+            tmp = data["Client"]+data["Task"]
+            new_rcrd1 = DropdownModel(tmp,data["Process"])
+            new_rcrd.save()
+            new_rcrd1.save()
 
 
+        return {"response":"Success"}
+       
 
 
 
