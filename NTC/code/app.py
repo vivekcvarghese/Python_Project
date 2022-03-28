@@ -18,7 +18,7 @@ from resources.pivot_datefilter import PivotDateFilter
 from resources.add_employee import AddEmployee, EditEmployee
 from resources.yearly_report import YearlyReport
 from resources.add_role import AddRole, EditRole
-from resources.edit_target import TargetFilter
+from resources.edit_target import TargetFilter, SingleTarget
 from flask_cors import CORS
 
 from dotenv import load_dotenv
@@ -63,7 +63,8 @@ api.add_resource(DeleteEmployeeReport, '/api/delemprprt')
 api.add_resource(EditRole, '/api/editrole/<string:id>')
 api.add_resource(AddRole, '/api/addrole')
 api.add_resource(ResetPassword, '/api/resetpassword')
-api.add_resource(TargetFilter, '/api/target')
+api.add_resource(TargetFilter, '/api/target/<string:client>', '/api/target')
+api.add_resource(SingleTarget, '/api/singletarget/<string:id>', '/api/singletarget')
 
 from db import db
 
