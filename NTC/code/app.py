@@ -19,6 +19,7 @@ from resources.add_employee import AddEmployee, EditEmployee
 from resources.yearly_report import YearlyReport
 from resources.add_role import AddRole, EditRole
 from resources.edit_target import TargetFilter, SingleTarget
+from resources.incentive_report import IncentiveRprt
 from flask_cors import CORS
 
 from dotenv import load_dotenv
@@ -65,6 +66,7 @@ api.add_resource(AddRole, '/api/addrole')
 api.add_resource(ResetPassword, '/api/resetpassword')
 api.add_resource(TargetFilter, '/api/target/<string:client>', '/api/target')
 api.add_resource(SingleTarget, '/api/singletarget/<string:id>', '/api/singletarget')
+api.add_resource(IncentiveRprt, '/api/incentiverprt')
 
 from db import db
 
