@@ -17,6 +17,7 @@ class EmployeeModel(db.Model):
     TASK=db.Column(db.String(100))
     process=db.Column(db.String(100))
     state=db.Column(db.String(100))
+    county=db.Column(db.String(100))
     shift=db.Column(db.String(100))
     production_status=db.Column(db.String(100))
     training_duration=db.Column(db.String(100))
@@ -31,7 +32,7 @@ class EmployeeModel(db.Model):
     updated_by=db.Column(db.String(100))
     deleted=db.Column(db.Boolean, default=False)
 
-    def __init__(self,empcode,name,doj,search,client,TASK,process,state,shift,production_status,training_duration,PORD,AORD,delay_reason,delay_duration,role,created_on,created_by,updated_on,updated_by,deleted):
+    def __init__(self,empcode,name,doj,search,client,TASK,process,state,county,shift,production_status,training_duration,PORD,AORD,delay_reason,delay_duration,role,created_on,created_by,updated_on,updated_by,deleted):
         self.empcode = empcode
         self.name = name
         self.doj = doj
@@ -40,6 +41,7 @@ class EmployeeModel(db.Model):
         self.TASK = TASK
         self.process = process
         self.state = state
+        self.county = county
         self.shift = shift
         self.production_status = production_status
         self.training_duration = training_duration
@@ -100,6 +102,7 @@ class EmployeeModel(db.Model):
 
             final["process"] = i.process
             final["state"] = i.state
+            final["county"] = i.county
             final["production_status"] = i.production_status
             final["training_duration"] = i.training_duration
             if i.PORD == None:

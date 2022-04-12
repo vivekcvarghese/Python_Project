@@ -7,16 +7,20 @@ class TargetModel(db.Model):
     Client=db.Column(db.String(100))
     Task=db.Column(db.String(100))
     Process=db.Column(db.String(100))
+    State=db.Column(db.String(100))
+    County=db.Column(db.String(100))
     Time=db.Column(db.Float)
     band1=db.Column(db.Integer)
     band2=db.Column(db.Integer)
     band3=db.Column(db.Integer)
     price=db.Column(db.Float)
 
-    def __init__(self,Client,Task,Process,Time,band1,band2,band3,price):
+    def __init__(self,Client,Task,Process,State,County,Time,band1,band2,band3,price):
         self.Client = Client
         self.Task = Task
         self.Process = Process
+        self.State = State
+        self.County = County
         self.Time = Time
         self.band1 = band1
         self.band2 = band2
@@ -33,9 +37,9 @@ class TargetModel(db.Model):
 
 
     @classmethod
-    def GetBandValue(cls, process):
+    def GetBandValue(cls, data):
 
-        return db.session.query(TargetModel.band1, TargetModel.price).filter(TargetModel.Process == process).first()
+        return db.session.query(TargetModel.band1, TargetModel.price).filter(TargetModel.Client == data["Client"],TargetModel.Task == data["Task"],TargetModel.Process == data["Process"],TargetModel.State == data["state"],TargetModel.County == data["county"]).first()
 
 
     @classmethod
@@ -58,6 +62,8 @@ class TargetModel(db.Model):
                "Client":i.Client,
                "Task":i.Task,
                "Process":i.Process,
+               "State":i.State,
+               "County":i.County,
                "Time":i.Time,
                "band1":i.band1,
                "band2":i.band2,

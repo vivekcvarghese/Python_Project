@@ -17,14 +17,14 @@ class EmployeeReport(Resource):
         jdata = request.get_json()
         data = jdata['inputs']
         print(data)
-        res = TargetModel.GetBandValue(data['Process'])
+        res = TargetModel.GetBandValue(data)
        
         if res != None and data['status'] == 'Completed/Submitted':
             if res[0] == 0:
                 target_time = 0
             else:    
                 target_time = 1/res[0] 
-            price = res[1]
+            price = res[1]*data['parcels']
         else:
             target_time = 0
             price = 0
@@ -33,7 +33,8 @@ class EmployeeReport(Resource):
         if data['id'] == "":
 
             emp = EmployeeRprtModel(data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
-            data['Task'], data['Process'], data['state'], data['startTime'], data['endTime'], data['totalTime'],
+            data['Task'], data['Process'], data['state'], data['county'], data['mode'], data['exception'], data['parcels'],
+            data['comments'], data['startTime'], data['endTime'], data['totalTime'],
             data['status'], target_time, 0, price, datetime.datetime.now(),datetime.datetime.now())
             emp.save_to_db()
         else:
@@ -45,6 +46,11 @@ class EmployeeReport(Resource):
             emp.task = data['Task']
             emp.process = data['Process']
             emp.state = data['state']
+            emp.county = data['county']
+            emp.mode = data['mode']
+            emp.parcels = data['parcels']
+            emp.exception = data['exception']
+            emp.comments = data['comments']
             emp.startTime = data['startTime']
             emp.endTime = data['endTime']
             emp.totalTime = data['totalTime']

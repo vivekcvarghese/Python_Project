@@ -10,10 +10,12 @@ from flask_jwt_extended import jwt_required
 
 class IncentiveRprt(Resource):
 
-    # @jwt_required()
-    def get(self):
-        # data = request.get_json()
+    @jwt_required()
+    def post(self):
+        data = request.get_json()
+        flag=0
         date_condition = []
+        date_condition.append(EmployeeRprtModel.date_dt.between(data["startDate"],data["endDate"]))
         emp_details = EmployeeModel.getAllEmployees()
         result = []
         for i in emp_details:
@@ -34,15 +36,19 @@ class IncentiveRprt(Resource):
             #.band1,TargetModel.band2,TargetModel.band3
             #state must be added in filter
             band_values = db.session.query(TargetModel).filter(TargetModel.Client == i.client, TargetModel.Task == i.TASK, TargetModel.Process == i.process).first()
-
+            print(band_values)
             res["band1"] = band_values.band1
             res["band2"] = band_values.band2
             res["band3"] = band_values.band3
 
             orders = db.session.query(func.count(EmployeeRprtModel.order_number)).filter(EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted', *date_condition).first()
             res["order_count"] = orders[0]
+            if orders[0] != 0:
+                flag = 1
+            if res["band1"]==0 and res["band2"]== 0 and res["band3"]==0:
+                res["productivity_band"] = ""
 
-            if  orders[0] < band_values.band1:
+            elif  orders[0] < band_values.band1:
                 res["productivity_band"] = "Band 0"
             elif orders[0] >= band_values.band1 and orders[0] < band_values.band2:
                 res["productivity_band"] = "Band 1"
@@ -57,4 +63,6 @@ class IncentiveRprt(Resource):
 
             result.append(res)
         
+        if flag == 0:
+            result = []
         return result

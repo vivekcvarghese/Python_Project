@@ -1,9 +1,9 @@
-from tabnanny import check
 from models.target_table import TargetModel
 from flask import Flask, request, jsonify
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from models.dropdown_table import DropdownModel
+from models.employee import EmployeeModel
 from db import db
 
 class SingleTarget(Resource):
@@ -36,6 +36,9 @@ class SingleTarget(Resource):
     def delete(self,id):
         try:
             res=db.session.query(TargetModel).filter(TargetModel.id == id).first()
+            emp = db.session.query(EmployeeModel).filter(EmployeeModel.client == res.Client, EmployeeModel.TASK == res.Task, EmployeeModel.process == res.Process).first()
+            if emp:
+                return {"response":"Employee with this target value exists"}
             #fetch array from dropdown table
             title = res.Client+res.Task
             dp = db.session.query(DropdownModel).filter(DropdownModel.title == title).first()
@@ -72,18 +75,18 @@ class SingleTarget(Resource):
 
 
         except:
-            return {"response":"Error"}
+            return {"response":"Failed"}
 
 
     @jwt_required()
     def post(self):
         data = request.get_json()
         #check data already exists
-        check = db.session.query(TargetModel).filter(TargetModel.Client == data["Client"], TargetModel.Task == data["Task"], TargetModel.Process == data["Process"]).first()
+        check = db.session.query(TargetModel).filter(TargetModel.State == data["State"], TargetModel.County == data["County"], TargetModel.Client == data["Client"], TargetModel.Task == data["Task"], TargetModel.Process == data["Process"]).first()
         if check:
             return {"response":"Data already exists!"}
         
-        target = TargetModel(data["Client"], data["Task"], data["Process"], data["Time"], data["band1"], data["band2"], data["band3"], data["price"])
+        target = TargetModel(data["Client"], data["Task"], data["Process"],data["State"], data["County"], data["Time"], data["band1"], data["band2"], data["band3"], data["price"])
         target.save_to_db()
 
         #insert to dropdown table\

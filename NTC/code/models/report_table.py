@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from logging import exception
 
 from sqlalchemy import func, desc
 from db import db
@@ -16,6 +17,11 @@ class EmployeeRprtModel(db.Model):
     task=db.Column(db.String(100))
     process=db.Column(db.String(100))
     state=db.Column(db.String(100))
+    county=db.Column(db.String(100))
+    mode=db.Column(db.String(100))
+    exception=db.Column(db.String(100))
+    parcels=db.Column(db.Integer)
+    comments=db.Column(db.String(100))
     startTime=db.Column(db.Time)
     endTime=db.Column(db.Time)
     totalTime=db.Column(db.Integer)
@@ -26,7 +32,7 @@ class EmployeeRprtModel(db.Model):
     updated_time=db.Column(db.DateTime)
     created_date=db.Column(db.DateTime)
     
-    def __init__(self,username,account_name,date_dt,order_number,client,task,process,state,startTime,endTime,totalTime,status,TargetTime,DayWiseBand,Revenue,updated_time,created_date):
+    def __init__(self,username,account_name,date_dt,order_number,client,task,process,state,county,mode,exception,parcels,comments,startTime,endTime,totalTime,status,TargetTime,DayWiseBand,Revenue,updated_time,created_date):
                 self.username = username
                 self.account_name = account_name
                 self.date_dt = date_dt
@@ -35,6 +41,11 @@ class EmployeeRprtModel(db.Model):
                 self.task = task
                 self.process = process
                 self.state = state
+                self.county = county
+                self.mode = mode
+                self.exception = exception
+                self.parcels = parcels
+                self.comments = comments
                 self.startTime = startTime
                 self.endTime = endTime
                 self.totalTime = totalTime

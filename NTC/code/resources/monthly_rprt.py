@@ -43,7 +43,7 @@ class RevenueRprt(Resource):
 
             result = db.session.query(*select_item, EmployeeRprtModel.date_dt)\
                 .filter(func.month(EmployeeRprtModel.date_dt) == month, func.year(EmployeeRprtModel.date_dt) == year,\
-                EmployeeRprtModel.account_name == i.empcode).group_by(EmployeeRprtModel.date_dt).all()
+                EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted').group_by(EmployeeRprtModel.date_dt).all()
 
             final["empcode"] = i.empcode
             final["name"] = i.name
