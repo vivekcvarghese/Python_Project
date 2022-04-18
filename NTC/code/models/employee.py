@@ -73,7 +73,7 @@ class EmployeeModel(db.Model):
     @classmethod
     def getSingleEmployee(cls, empid):
         st = EmployeeModel.__dict__['__table__'].alias("u")
-        return db.session.query(st).filter(st.c.empcode == empid, st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\
+        return db.session.query(st).filter(st.c.deleted == 0, st.c.empcode == empid, st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\
         .filter(EmployeeModel.empcode==st.c.empcode))).all()
 
     @classmethod

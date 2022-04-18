@@ -26,11 +26,16 @@ class ViewOwnStatus(Resource):
             op["Task"] = row.task
             op["Process"] = row.process
             op["state"] = row.state
+            op["county"] = row.county
+            op["mode"] = row.mode
+            op["parcels"] = row.parcels
+            op["exception"] = row.exception
             op["start_Time"] = str(row.startTime)
             op["end_Time"] = str(row.endTime)
             op["total_Time"] = str(row.totalTime)
             op["status"] = row.status
             op["last_updated_time"] = str(row.updated_time)
+            op["comments"] = row.comments
             op["id"] = row.id
             output.append(op)
         

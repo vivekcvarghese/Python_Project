@@ -76,6 +76,7 @@ class DeleteEmployeeReport(Resource):
 
         jdata = request.get_json()
         data = jdata['inputs']
+        print(data)
 
         emp = EmployeeRprtModel.singleStatus(data['id'])
         emp.delete()

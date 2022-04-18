@@ -34,11 +34,18 @@ class SingleTarget(Resource):
 
     @jwt_required()
     def delete(self,id):
-        try:
+        # try:
             res=db.session.query(TargetModel).filter(TargetModel.id == id).first()
-            emp = db.session.query(EmployeeModel).filter(EmployeeModel.client == res.Client, EmployeeModel.TASK == res.Task, EmployeeModel.process == res.Process).first()
+            emp = db.session.query(EmployeeModel).filter(EmployeeModel.client == res.Client, EmployeeModel.TASK == res.Task,\
+                EmployeeModel.process == res.Process, EmployeeModel.state == res.State, EmployeeModel.county == res.County).first()
             if emp:
                 return {"response":"Employee with this target value exists"}
+            res.delete()
+
+            chk = db.session.query(TargetModel).filter(TargetModel.Client == res.Client, TargetModel.Task == res.Task, TargetModel.Process == res.Process).first()
+            if chk:
+                return {"response":"Success"}
+
             #fetch array from dropdown table
             title = res.Client+res.Task
             dp = db.session.query(DropdownModel).filter(DropdownModel.title == title).first()
@@ -69,13 +76,12 @@ class SingleTarget(Resource):
                 dp.value = ",".join(filtered)
                 dp.save()
 
-            
-            res.delete()
+        
             return {"response":"Success"}
 
 
-        except:
-            return {"response":"Failed"}
+        # except:
+        #     return {"response":"Failed"}
 
 
     @jwt_required()
