@@ -1,7 +1,7 @@
 import os
+
 from flask import Flask
 from flask_restful import Api
-# from sqlalchemy import true
 # from flask_jwt import JWT
 from flask_jwt_extended import JWTManager
 from resources.user import User, ResetPassword
@@ -22,13 +22,13 @@ from resources.edit_target import TargetFilter, SingleTarget
 from resources.incentive_report import IncentiveRprt
 from flask_cors import CORS
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
-pswd = os.getenv('MYSQL')
+# # load_dotenv()
+# pswd = os.getenv('MYSQL')
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+mysqlconnector://root:root@docker_db_1/ntc"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root@localhost/ntc"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 
@@ -40,7 +40,6 @@ app.config['JWT_SECRET_KEY'] = 'ntcbpohyd**jwt'
 api = Api(app)
 CORS(app)
 
-# test
 # @app.before_first_request
 # def create_tables():
 #     db.create_all()
@@ -68,8 +67,8 @@ api.add_resource(TargetFilter, '/api/target/<string:client>', '/api/target')
 api.add_resource(SingleTarget, '/api/singletarget/<string:id>', '/api/singletarget')
 api.add_resource(IncentiveRprt, '/api/incentiverprt')
 
-from db import db
-
 if __name__ == '__main__':
+    from db import db
+
     db.init_app(app)
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True)  

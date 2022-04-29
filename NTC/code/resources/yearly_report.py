@@ -55,6 +55,7 @@ class YearlyReport(Resource):
             final["task"] = i.TASK
             final["process"] = i.process
             final["state"] = i.state
+            final["county"] = i.county
             total = 0
             for j in result:
                 final[ml[(j[1]-1)]] = float(round(j[0], 2))

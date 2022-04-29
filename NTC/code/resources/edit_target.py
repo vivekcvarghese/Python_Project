@@ -140,3 +140,28 @@ class TargetFilter(Resource):
 
         res = TargetModel.GetTargetTable(client)
         return TargetModel.setOutputFormat(res)
+
+    @jwt_required()
+    def post(self):
+
+        data = request.get_json()["inputs"]
+        state=[]
+        county=[]
+        if data["state"] == "":
+            res = db.session.query(TargetModel.State).filter(TargetModel.Client == data["Client"],TargetModel.Task == data["Task"],TargetModel.Process == data["Process"]).all()
+            state = [i.State for i in res]
+            
+
+            result = {
+                "state":list(set(state))    
+            }
+           
+        else:
+            res = db.session.query(TargetModel.County).filter(TargetModel.Client == data["Client"],TargetModel.Task == data["Task"],TargetModel.Process == data["Process"], TargetModel.State == data["state"]).all()
+            county = [i.County for i in res]
+            result = {
+                "county":list(set(county))    
+            }
+
+        return result
+            

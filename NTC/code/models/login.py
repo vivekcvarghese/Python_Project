@@ -30,7 +30,7 @@ class LoginModel(db.Model):
         @classmethod
         def getcredentials(cls,username,password):
 
-            res = db.session.query(LoginModel).filter(LoginModel.username == username).first()
+            res = db.session.query(LoginModel).filter(LoginModel.username == func.binary(username)).first()
             if res != None:
                 login = res.check_password(password)
                 if login:

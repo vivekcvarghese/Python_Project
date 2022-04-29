@@ -35,17 +35,23 @@ class IncentiveRprt(Resource):
             res["state"] = i.state
             #.band1,TargetModel.band2,TargetModel.band3
             #state must be added in filter
-            band_values = db.session.query(TargetModel).filter(TargetModel.Client == i.client, TargetModel.Task == i.TASK, TargetModel.Process == i.process).first()
-            print(band_values)
-            res["band1"] = band_values.band1
-            res["band2"] = band_values.band2
-            res["band3"] = band_values.band3
+            
+            band_values = db.session.query(TargetModel).filter(TargetModel.Client == i.client, TargetModel.Task == i.TASK, TargetModel.Process == i.process, TargetModel.State == i.state).first()
+            if i.TASK == "Non-Production":
+                res["band1"] = ""
+                res["band2"] = ""
+                res["band3"] = ""
+            else:
+                print(i) 
+                res["band1"] = band_values.band1
+                res["band2"] = band_values.band2
+                res["band3"] = band_values.band3
 
             orders = db.session.query(func.count(EmployeeRprtModel.order_number)).filter(EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted', *date_condition).first()
             res["order_count"] = orders[0]
             if orders[0] != 0:
                 flag = 1
-            if res["band1"]==0 and res["band2"]== 0 and res["band3"]==0:
+            if res["band1"]=="" and res["band2"]== "" and res["band3"]=="":
                 res["productivity_band"] = ""
 
             elif  orders[0] < band_values.band1:

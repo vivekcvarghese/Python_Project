@@ -112,6 +112,7 @@ class EmployeeRprtModel(db.Model):
             final["task"] = i.TASK
             final["process"] = i.process
             final["state"] = i.state
+            final["county"] = i.county
             
             if result[0] != 0:
                 flag = 1
