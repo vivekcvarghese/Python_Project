@@ -22,9 +22,9 @@ class ViewOwnStatus(Resource):
             op = {}
             op["date"] = row.date_dt.strftime("%d-%m-%Y")
             op["order_number"] = row.order_number
-            op["Client"] = row.client
-            op["Task"] = row.task
-            op["Process"] = row.process
+            op["client"] = row.client
+            op["task"] = row.task
+            op["process"] = row.process
             op["state"] = row.state
             op["county"] = row.county
             op["mode"] = row.mode

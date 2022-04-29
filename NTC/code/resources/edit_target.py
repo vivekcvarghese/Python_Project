@@ -148,7 +148,7 @@ class TargetFilter(Resource):
         state=[]
         county=[]
         if data["state"] == "":
-            res = db.session.query(TargetModel.State).filter(TargetModel.Client == data["Client"],TargetModel.Task == data["Task"],TargetModel.Process == data["Process"]).all()
+            res = db.session.query(TargetModel.State).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"]).all()
             state = [i.State for i in res]
             
 
@@ -157,9 +157,12 @@ class TargetFilter(Resource):
             }
            
         else:
-            res = db.session.query(TargetModel.County).filter(TargetModel.Client == data["Client"],TargetModel.Task == data["Task"],TargetModel.Process == data["Process"], TargetModel.State == data["state"]).all()
+            res1 = db.session.query(TargetModel.State).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"]).all()
+            state = [i.State for i in res1]
+            res = db.session.query(TargetModel.County).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"], TargetModel.State == data["state"]).all()
             county = [i.County for i in res]
             result = {
+                "state":list(set(state)) ,
                 "county":list(set(county))    
             }
 

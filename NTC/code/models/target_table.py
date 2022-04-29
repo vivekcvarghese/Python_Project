@@ -39,7 +39,7 @@ class TargetModel(db.Model):
     @classmethod
     def GetBandValue(cls, data):
 
-        return db.session.query(TargetModel.band1, TargetModel.price).filter(TargetModel.Client == data["Client"],TargetModel.Task == data["Task"],TargetModel.Process == data["Process"],TargetModel.State == data["state"],TargetModel.County == data["county"]).first()
+        return db.session.query(TargetModel.band1, TargetModel.price).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"],TargetModel.State == data["state"],TargetModel.County == data["county"]).first()
 
 
     @classmethod

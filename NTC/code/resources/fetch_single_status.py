@@ -20,9 +20,9 @@ class FetchSingleStatus(Resource):
             op = {}
             op["date"] = res.date_dt.strftime("%Y-%m-%d")
             op["orderNumber"] = res.order_number
-            op["Client"] = res.client
-            op["Task"] = res.task
-            op["Process"] = res.process
+            op["client"] = res.client
+            op["task"] = res.task
+            op["process"] = res.process
             op["state"] = res.state
             op["county"] = res.county
             op["mode"] = res.mode

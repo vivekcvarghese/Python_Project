@@ -32,8 +32,8 @@ class EmployeeReport(Resource):
 
         if data['id'] == "":
 
-            emp = EmployeeRprtModel(data['username'], data['account_name'], data['date'], data['orderNumber'], data['Client'],
-            data['Task'], data['Process'], data['state'], data['county'], data['mode'], data['exception'], data['parcels'],
+            emp = EmployeeRprtModel(data['username'], data['account_name'], data['date'], data['orderNumber'], data['client'],
+            data['task'], data['process'], data['state'], data['county'], data['mode'], data['exception'], data['parcels'],
             data['comments'], data['startTime'], data['endTime'], data['totalTime'],
             data['status'], target_time, 0, price, datetime.datetime.now(),datetime.datetime.now())
             emp.save_to_db()
@@ -42,9 +42,9 @@ class EmployeeReport(Resource):
             temp = emp.date_dt
             emp.order_number = data['orderNumber']
             emp.date_dt = data['date']
-            emp.client = data['Client']
-            emp.task = data['Task']
-            emp.process = data['Process']
+            emp.client = data['client']
+            emp.task = data['task']
+            emp.process = data['process']
             emp.state = data['state']
             emp.county = data['county']
             emp.mode = data['mode']
@@ -76,7 +76,6 @@ class DeleteEmployeeReport(Resource):
 
         jdata = request.get_json()
         data = jdata['inputs']
-        print(data)
 
         emp = EmployeeRprtModel.singleStatus(data['id'])
         emp.delete()
