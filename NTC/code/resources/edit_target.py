@@ -145,10 +145,11 @@ class TargetFilter(Resource):
     def post(self):
 
         data = request.get_json()["inputs"]
+        condition = [TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"]]
         state=[]
         county=[]
         if data["state"] == "":
-            res = db.session.query(TargetModel.State).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"]).all()
+            res = db.session.query(TargetModel.State).filter(*condition).all()
             state = [i.State for i in res]
             
 
@@ -157,9 +158,9 @@ class TargetFilter(Resource):
             }
            
         else:
-            res1 = db.session.query(TargetModel.State).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"]).all()
+            res1 = db.session.query(TargetModel.State).filter(*condition).all()
             state = [i.State for i in res1]
-            res = db.session.query(TargetModel.County).filter(TargetModel.Client == data["client"],TargetModel.Task == data["task"],TargetModel.Process == data["process"], TargetModel.State == data["state"]).all()
+            res = db.session.query(TargetModel.County).filter(*condition, TargetModel.State == data["state"]).all()
             county = [i.County for i in res]
             result = {
                 "state":list(set(state)) ,

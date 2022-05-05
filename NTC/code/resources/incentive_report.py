@@ -42,7 +42,7 @@ class IncentiveRprt(Resource):
                 res["band2"] = ""
                 res["band3"] = ""
             else:
-                print(i) 
+                 
                 res["band1"] = band_values.band1
                 res["band2"] = band_values.band2
                 res["band3"] = band_values.band3
