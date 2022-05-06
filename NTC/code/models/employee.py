@@ -71,6 +71,13 @@ class EmployeeModel(db.Model):
         .filter(EmployeeModel.empcode==st.c.empcode))).all() 
 
     @classmethod
+    def getDeletedEmployees(cls):
+        st = EmployeeModel.__dict__['__table__'].alias("u")
+        return db.session.query(st).filter(st.c.deleted == 1, st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\
+        .filter(EmployeeModel.empcode==st.c.empcode))).all()
+
+
+    @classmethod
     def getSingleEmployee(cls, empid):
         st = EmployeeModel.__dict__['__table__'].alias("u")
         return db.session.query(st).filter(st.c.deleted == 0, st.c.empcode == empid, st.c.updated_on == (db.session.query(func.max(EmployeeModel.updated_on))\

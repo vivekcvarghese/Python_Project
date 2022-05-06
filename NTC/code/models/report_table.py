@@ -83,6 +83,41 @@ class EmployeeRprtModel(db.Model):
 
     @classmethod
     def fetchStatus(cls,date,startDate,endDate):
+
+        def fn(res, final_array, deleted, flag):
+            for i in res:
+                final = {}
+                result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted', *date_condition).first()
+                print(result)
+                if deleted == 0 or result[0]!=0:
+                    final["empcode"] = i.empcode
+                    final["name"] = i.name
+                    if i.doj == None:
+                        final["doj"] = "NA"
+                    else:
+                        final["doj"] = i.doj.strftime("%d-%m-%Y")
+                    final["search"] = i.search
+                    final["client"] = i.client
+                    final["task"] = i.TASK
+                    final["process"] = i.process
+                    final["state"] = i.state
+                    final["county"] = i.county
+                    
+                    if result[0] != 0:
+                        flag = 1
+                        final["order_count"] = result[0]
+                        final["productivity"] = float(round(result[1],1)) 
+                        final["utilization"] = float(round(result[2],2))
+                        final["revenue"] = float(round(result[3],2))
+                    else:
+                        final["order_count"] = 0
+                        final["productivity"] = 0
+                        final["utilization"] = 0
+                        final["revenue"] = 0
+                    
+                    final_array.append(final)
+            return final_array,flag
+
         date_condition = []
 
         if startDate == "" and endDate == "":
@@ -97,37 +132,9 @@ class EmployeeRprtModel(db.Model):
 
         flag = None
         final_array = []
-        for i in res:
-            final = {}
-            result = db.session.query(func.count(EmployeeRprtModel.order_number), func.sum(EmployeeRprtModel.TargetTime)*100, (func.sum(EmployeeRprtModel.totalTime)/480)*100, func.sum(EmployeeRprtModel.Revenue)).filter(EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted', *date_condition).first()
-
-            final["empcode"] = i.empcode
-            final["name"] = i.name
-            if i.doj == None:
-                final["doj"] = "NA"
-            else:
-                final["doj"] = i.doj.strftime("%d-%m-%Y")
-            final["search"] = i.search
-            final["client"] = i.client
-            final["task"] = i.TASK
-            final["process"] = i.process
-            final["state"] = i.state
-            final["county"] = i.county
-            
-            if result[0] != 0:
-                flag = 1
-                final["order_count"] = result[0]
-                final["productivity"] = float(round(result[1],1)) 
-                final["utilization"] = float(round(result[2],2))
-                final["revenue"] = float(round(result[3],2))
-            else:
-                final["order_count"] = 0
-                final["productivity"] = 0
-                final["utilization"] = 0
-                final["revenue"] = 0
-            
-            final_array.append(final)
-
+        final_array,flag = fn(res, final_array, 0, flag)
+        res = EmployeeModel.getDeletedEmployees()
+        final_array,flag = fn(res, final_array, 1, flag)
     
         if flag == None:
             final_array = []

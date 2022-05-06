@@ -14,6 +14,35 @@ class YearlyReport(Resource):
     @jwt_required()
     def post(self):
 
+        def fn(res, final_array, deleted):
+            for i in res:
+                final = {}
+
+                result = db.session.query(*select_item, func.month(EmployeeRprtModel.date_dt))\
+                    .filter(func.year(EmployeeRprtModel.date_dt) == year,\
+                    EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted').group_by(func.month(EmployeeRprtModel.date_dt)).all()
+                if deleted == 0 or result:
+                    final["empcode"] = i.empcode
+                    final["name"] = i.name
+                    if i.doj == None:
+                        final["doj"] = "NA"
+                    else:
+                        final["doj"] = i.doj.strftime("%d-%m-%Y")
+                    final["search"] = i.search
+                    final["client"] = i.client
+                    final["task"] = i.TASK
+                    final["process"] = i.process
+                    final["state"] = i.state
+                    final["county"] = i.county
+                    total = 0
+                    for j in result:
+                        final[ml[(j[1]-1)]] = float(round(j[0], 2))
+                        total += j[0]
+                    final["total"] = float(round(total, 2))
+                    final_array.append(final)
+            return final_array
+
+
         jdata = request.get_json()
         year = jdata['date']
         sheet_name = jdata['sheetName']
@@ -37,32 +66,9 @@ class YearlyReport(Resource):
         res = EmployeeModel.getAllEmployees()
 
         final_array = []
-        for i in res:
-            final = {}
-
-            result = db.session.query(*select_item, func.month(EmployeeRprtModel.date_dt))\
-                .filter(func.year(EmployeeRprtModel.date_dt) == year,\
-                EmployeeRprtModel.account_name == i.empcode, EmployeeRprtModel.status == 'Completed/Submitted').group_by(func.month(EmployeeRprtModel.date_dt)).all()
-            
-            final["empcode"] = i.empcode
-            final["name"] = i.name
-            if i.doj == None:
-                final["doj"] = "NA"
-            else:
-                final["doj"] = i.doj.strftime("%d-%m-%Y")
-            final["search"] = i.search
-            final["client"] = i.client
-            final["task"] = i.TASK
-            final["process"] = i.process
-            final["state"] = i.state
-            final["county"] = i.county
-            total = 0
-            for j in result:
-                final[ml[(j[1]-1)]] = float(round(j[0], 2))
-                total += j[0]
-            final["total"] = float(round(total, 2))
-            final_array.append(final)
-
+        final_array = fn(res, final_array, 0)
+        res = EmployeeModel.getDeletedEmployees()
+        final_array = fn(res, final_array, 1)
 
         output = {}
         output["data"] = final_array
